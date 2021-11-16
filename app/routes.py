@@ -16,7 +16,7 @@ def index():
 def location():
     return render_template("location.html")
 
-# Visualisation (for  a location) ##########################
+# Visualisation (for comparison) ##########################
 @app.route("/comparaison/", methods=["GET","POST"])
 def comparaison():
     return render_template("comparaison.html")
