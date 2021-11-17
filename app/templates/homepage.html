@@ -3,6 +3,15 @@
     <head>
         <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/topnav.css') }}">
         <title>Disasters homepage</title>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+
+
+        <script src='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'></script>
+        <link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' />
+        <script src="https://unpkg.com/@esri/arcgis-rest-request@3.0.0/dist/umd/request.umd.js"></script>
+    <script src="https://unpkg.com/@esri/arcgis-rest-geocoding@3.0.0/dist/umd/geocoding.umd.js"></script>
+    <script src="https://unpkg.com/@esri/arcgis-rest-auth@3.0.0/dist/umd/auth.umd.js"></script>
     </head>
     <body>
         <div class="topnav">
@@ -18,5 +27,76 @@
             </div>
             <a href="/comparaison/">Comparaison</a>
         </div>
+        <div >
+            <h1>SEARCH MAP</h1>
+        </div>
+
+        <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
+        <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
+
+        <div id='map' style='width: 1350px; height: 800px;'></div>
+
+        <script>
+            const apiKey = "AAPKa64df2f9419b420883ff25639be480b7H3gwdf8yktTBRQ4KWDT2UM_ArM24tkrlp9fOT-X3QtQjcq0kzo_W92H8pdejrDez";
+            const basemapEnum = "ArcGIS:Imagery";
+            const style_url = "https://basemaps-api.arcgis.com/arcgis/rest/services/styles/"+basemapEnum+"?type=style&token="+apiKey
+            mapboxgl.accessToken ="pk.eyJ1IjoiaW5ub2JveSIsImEiOiJja3cybXpzam8xa2MxMnBubzNtNXZsY3R0In0.v-o2LRQOV0xI_yGRKrqHTA";
+            var map = new mapboxgl.Map({
+            container: 'map',
+            style : style_url,
+            //style: "https://basemaps-api.arcgis.com/arcgis/rest/services/styles/${basemapEnum}?type=style&token=${apiKey}",
+            //style: 'mapbox://styles/mapbox/satellite-streets-v11',
+            center: [50.46, 4.86], // starting position
+            zoom: 2 // starting zoom
+          });
+            // Add zoom and rotation controls to the map.
+            map.addControl(new mapboxgl.NavigationControl());
+            // Add the control to the map.
+            map.addControl(
+            new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            mapboxgl: mapboxgl
+            })
+            );
+            map.on("click", (e) => {
+            const coords = e.lngLat.toArray();
+            const authentication = new arcgisRest.ApiKey({
+            key: apiKey
+            });
+
+            arcgisRest
+        .reverseGeocode(coords, {
+          authentication
+        })
+        .then((result) => {
+
+          const lngLat = [result.location.x, result.location.y];
+          document.getElementById("long").value = lngLat[0].toFixed(4);
+          document.getElementById("lat").value = lngLat[1].toFixed(4);
+          const label = `${result.address.LongLabel}<br>${lngLat[1].toLocaleString()}, ${lngLat[0].toLocaleString()}`;
+
+          new mapboxgl
+            .Popup()
+            .setLngLat(lngLat)
+            .setHTML(label)
+            .addTo(map);
+
+          })
+
+        .catch((error) => {
+          alert("There was a problem using the reverse geocode service. See the console for details.");
+          console.error(error);
+        });
+
+        });
+
+
+
+
+
+
+        </script>
+
+        <script src="https://d3js.org/d3.v7.min.js"></script>
     </body>
 </html>

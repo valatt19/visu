@@ -9,11 +9,15 @@ from flask import url_for, request
 # Homepage (for searching a location) ######################
 @app.route("/", methods=["GET","POST"])
 def index():
+
+
     return render_template("homepage.html")
 
 # Visualisation (for  a location) ##########################
 @app.route("/location/", methods=["GET","POST"])
 def location():
+
+
     return render_template("location.html")
 
 # Visualisation (for comparison) ##########################
