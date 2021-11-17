@@ -8,7 +8,7 @@
         <div class="topnav">
             <a href="/">Home</a>
             <div class="search">
-                <form action="/location/" method="POST">
+                <form action="/location/" method="GET">
                     <label for="lat">Latitude: </label>
                     <input type="number" step="0.0001" id="lat" name="lat">
                     <label for="long">Longitude: </label>
@@ -17,5 +17,19 @@
                 </form>
             </div>
         </div>
+
+        <div class="summary">
+            <h1>Summary</h1>
+            <p>Volcanos: {{summary[0]}}</p>
+            <p>Earthquakes: {{summary[1]}}</p>
+            <p>Tsunamis: {{summary[2]}}</p>
+        </div>
+
+        <div class="visu">
+            <div class="circles"></div>
+            <div class="timeline"></div>
+        </div>
+
+        <div class="detail"></div>
     </body>
 </html>

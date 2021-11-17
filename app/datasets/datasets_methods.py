@@ -1,4 +1,3 @@
-import math
 import geopy.distance as dist
 import json
 
@@ -30,19 +29,19 @@ def get_events_in_radius(coord,radius):
     - events (dict) : all the event that appened in the radius 
     """
     # Import json files into dicts
-    with open("earthquakes_events.json") as eq_file:
+    with open("app/datasets/earthquakes_events.json") as eq_file:
         eq = json.load(eq_file)
 
-    with open("tsunamis_events.json") as ts_file:
+    with open("app/datasets/tsunamis_events.json") as ts_file:
         ts = json.load(ts_file)
     
-    with open("volcano_events.json") as ve_file:
+    with open("app/datasets/volcano_events.json") as ve_file:
         ve = json.load(ve_file)
     
-    with open("volcano_locations.json") as vl_file:
+    with open("app/datasets/volcano_locations.json") as vl_file:
         vl = json.load(vl_file)
 
-    with open("helper_dataset.json") as hd_file:
+    with open("app/datasets/helper_dataset.json") as hd_file:
         hd = json.load(hd_file)
 
     events = {"earthquakes":[],"tsunamis":[],"volcanos":[]}
@@ -81,12 +80,10 @@ def get_events_in_radius(coord,radius):
                 elif "damageAmountOrder" in earthquake : 
                      mil_mins = [0,1,2,5,25]
                      # mil_maxs = [0,50,100,1000,1001]
-                     eq_event["damages"] = mil_mins[earthquake["damageMillionsDollars"]]
+                     eq_event["damages"] = mil_mins[earthquake["damageAmountOrder"]]
 
                 events["earthquakes"].append(eq_event)
 
     # Finally, returns all the events            
     return events
-
-print(get_events_in_radius([50.411461,4.44424],100))
             
