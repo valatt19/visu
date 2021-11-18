@@ -84,6 +84,45 @@ def get_events_in_radius(coord,radius):
 
                 events["earthquakes"].append(eq_event)
 
+    # Check all the tsunami events
+    for tsunami in ts :
+        if "latitude" in tsunami and "longitude" in tsunami :
+            ts_coord = (tsunami["latitude"],tsunami["longitude"])
+            ts_distance = compute_distance(coord,ts_coord)
+
+            if ts_distance <= radius :
+                # Complete the infos of an event with the helper dataset
+                ts_event = tsunami
+                ts_event["distance"] = ts_distance
+
+                if "causeCode" in tsunami :
+                    for c in hd["tsunamis"]["causes"]:
+                        if str(tsunami["causeCode"]) == c["id"]:
+                            ts_event["cause"] = c["description"]
+
+                if (not ("deaths" in tsunami)) and "deathsAmountOrder" in tsunami :
+                     deaths_mins = [0,1,51,101,1001]
+                     # deaths_maxs = [0,50,100,1000,1001]
+                     ts_event["deaths"] = deaths_mins[tsunami["deathsAmountOrder"]]
+
+                if (not ("housesDamaged" in tsunami)) and "housesDamagedAmountOrder" in tsunami :
+                     dam_mins = [0,1,51,101,1001]
+                     # dam_maxs = [0,50,100,1000,1001]
+                     ts_event["housesDamaged"] = dam_mins[tsunami["housesDamagedAmountOrder"]]
+
+                if (not ("injuries" in tsunami)) and "injuriesAmountOrder" in tsunami :
+                     inj_mins = [0,1,51,101,1001]
+                     # inj_maxs = [0,50,100,1000,1001]
+                     ts_event["injuries"] = inj_mins[tsunami["injuriesAmountOrder"]]
+
+                if "damageMillionsDollars" in tsunami :
+                     ts_event["damages"] = tsunami["damageMillionsDollars"]
+                elif "damageAmountOrder" in tsunami : 
+                     mil_mins = [0,1,2,5,25]
+                     # mil_maxs = [0,50,100,1000,1001]
+                     ts_event["damages"] = mil_mins[tsunami["damageAmountOrder"]]
+
+                events["tsunamis"].append(ts_event)
+
     # Finally, returns all the events            
     return events
-            
