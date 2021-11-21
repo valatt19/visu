@@ -124,5 +124,50 @@ def get_events_in_radius(coord,radius):
 
                 events["tsunamis"].append(ts_event)
 
+    # Check all the volcanos locations
+    volcanos_id = [] # list of all id of the volcanos in the scope of the location
+    for volcano in vl :
+        if "latitude" in volcano and "longitude" in volcano :
+            vl_coord = (volcano["latitude"],volcano["longitude"])
+            vl_distance = compute_distance(coord,vl_coord)
+
+            if vl_distance <= radius :
+                volcanos_id.append(volcano["id"])
+                vlocation = volcano
+                vlocation["distance"] = vl_distance
+                vlocation["erruptions"] = []
+
+                events["volcanos"].append(vlocation)
+
+    # Check all the erruptions and add it in the erruptions of the correspondant volcano
+    for erruption in ve :
+        for i in range(len(volcanos_id)):
+            if str(erruption["volcanoLocationId"]) == str(volcanos_id[i]) :
+                vevent = erruption
+
+                if (not ("deaths" in erruption)) and "deathsAmountOrder" in erruption :
+                        deaths_mins = [0,1,51,101,1001]
+                        # deaths_maxs = [0,50,100,1000,1001]
+                        vevent["deaths"] = deaths_mins[erruption["deathsAmountOrder"]]
+
+                if (not ("housesDamaged" in erruption)) and "housesDamagedAmountOrder" in erruption :
+                        dam_mins = [0,1,51,101,1001]
+                        # dam_maxs = [0,50,100,1000,1001]
+                        vevent["housesDamaged"] = dam_mins[erruption["housesDamagedAmountOrder"]]
+
+                if (not ("injuries" in erruption)) and "injuriesAmountOrder" in erruption :
+                        inj_mins = [0,1,51,101,1001]
+                        # inj_maxs = [0,50,100,1000,1001]
+                        vevent["injuries"] = inj_mins[erruption["injuriesAmountOrder"]]
+
+                if "damageMillionsDollars" in erruption :
+                        vevent["damages"] = erruption["damageMillionsDollars"]
+                elif "damageAmountOrder" in erruption : 
+                        mil_mins = [0,1,2,5,25]
+                        # mil_maxs = [0,50,100,1000,1001]
+                        vevent["damages"] = mil_mins[erruption["damageAmountOrder"]]
+
+                events["volcanos"][i]["erruptions"].append(vevent)
+
     # Finally, returns all the events            
     return events
