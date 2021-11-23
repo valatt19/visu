@@ -2,6 +2,9 @@
 <html>
     <head>
         <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/topnav.css') }}">
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/location.css') }}">
+        <script type = "text/javascript" src = "https://d3js.org/d3.v4.min.js"></script>
+
         <title>Disasters location</title>
     </head>
     <body>
@@ -25,11 +28,72 @@
             <p>Tsunamis: {{summary[2]}}</p>
         </div>
 
-        <div class="visu">
-            <div class="circles"></div>
-            <div class="timeline"></div>
+        <div class="visu" style="text-align:center">
+            <h1>[ {{coord[0]}} ; {{coord[1]}} ]</h1>
+            <div class="circles" style="text-align:center;">
+                <svg width = "600" height = "500" > 
+                    <g>
+                        <image xlink:href="/static/img/nord.png" x=500 y=10 height="35" width="35" />
+                    </g>
+                    <g>
+                        <circle style="fill: #ffffff" stroke="black" cx=300 cy=250 r=200></circle>
+                    </g>
+                    <g>
+                        <text stroke="black" style="font-size: 12px" x=505 y=250>50km</text>
+                    </g>
+                    <g>
+                        <circle style="fill: #ffffff" stroke="black" cx=300 cy=250 r=100></circle>
+                    </g>
+                    <g>
+                        <text stroke="black" style="font-size: 12px" x=405 y=250>25km</text>
+                    </g>
+                    <g>
+                        <circle style="fill: #ff0000" stroke="black" cx=300 cy=250 r=5></circle>
+                    </g>
+
+                    {% for e in events["earthquakes"] %}
+                    <g>
+                        <image xlink:href="/static/img/icon_earthquake.png" x={{300+e["proj"][0]*4}} y={{250+e["proj"][1]*4}} height="25" width="25" />
+                    </g>
+                    {% endfor %}
+
+
+                    {% for e in events["tsunamis"] %}
+                    <g>
+                        <text style="font-size: 25px" x={{300+e["proj"][0]*4}} y={{250+e["proj"][1]*4}}>🌊</text>
+                    </g>
+                    {% endfor %}
+
+
+                    {% for e in events["volcanos"] %}
+                    <g>
+                        <text style="font-size: 25px" x={{300+e["proj"][0]*4}} y={{250+e["proj"][1]*4}}>🌋</text>
+                    </g>
+                    {% endfor %}
+                 </svg>
+
+            </div>
+            <div class="timeline">
+            </div>
         </div>
 
-        <div class="detail"></div>
+        <div class="details">
+            <h1>Details</h1>
+        </div>
+
+
+        <script type="text/javascript">
+            function findNewPoint(x, y, angle, distance) {
+                var result = {};
+
+                result.x = Math.round(Math.cos(angle * Math.PI / 180) * distance + x);
+                result.y = Math.round(Math.sin(angle * Math.PI / 180) * distance + y);
+
+                return result;
+            }
+
+            var newPoint = findNewPoint(10, 20, 10, 200);
+            console.log('newPoint:', newPoint);
+        </script>
     </body>
 </html>

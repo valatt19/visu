@@ -1,0 +1,24 @@
+* {
+    box-sizing: border-box;
+  }
+
+  .summary {
+    float: left;
+    width: 25%;
+    padding: 10px;
+    height: 100vh;
+    background-color:#eee;
+  }
+  .visu {
+    float: left;
+    width: 50%;
+    padding: 10px;
+    height: 100vh;
+  }
+  .details {
+    float: left;
+    width: 25%;
+    padding: 10px;
+    height: 100vh;
+    background-color:#eee;
+  }
