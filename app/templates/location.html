@@ -31,43 +31,43 @@
         <div class="visu" style="text-align:center">
             <h1>[ {{coord[0]}} ; {{coord[1]}} ]</h1>
             <div class="circles" style="text-align:center;">
-                <svg width = "600" height = "500" > 
+                <svg width = "600" height = "600" style="border:2px solid black"> 
                     <g>
-                        <image xlink:href="/static/img/nord.png" x=500 y=10 height="35" width="35" />
+                        <image xlink:href="/static/img/nord.png" x=500 y=60 height="35" width="35" />
                     </g>
                     <g>
-                        <circle style="fill: #ffffff" stroke="black" cx=300 cy=250 r=200></circle>
+                        <circle style="fill: #ffffff" stroke="black" stroke-width="2" cx=300 cy=300 r=250></circle>
                     </g>
                     <g>
-                        <text stroke="black" style="font-size: 12px" x=505 y=250>50km</text>
+                        <text stroke="black" style="font-size: 12px" x=555 y=300>50km</text>
                     </g>
                     <g>
-                        <circle style="fill: #ffffff" stroke="black" cx=300 cy=250 r=100></circle>
+                        <circle style="fill: #ffffff" stroke="black" stroke-width="2" cx=300 cy=300 r=125></circle>
                     </g>
                     <g>
-                        <text stroke="black" style="font-size: 12px" x=405 y=250>25km</text>
+                        <text stroke="black" style="font-size: 12px" x=430 y=300>25km</text>
                     </g>
                     <g>
-                        <circle style="fill: #ff0000" stroke="black" cx=300 cy=250 r=5></circle>
+                        <circle style="fill: #ff0000" stroke="black" cx=300 cy=300 r=5></circle>
                     </g>
 
                     {% for e in events["earthquakes"] %}
                     <g>
-                        <image xlink:href="/static/img/icon_earthquake.png" x={{300+e["proj"][0]*4}} y={{250+e["proj"][1]*4}} height="25" width="25" />
+                        <image xlink:href="/static/img/icon_earthquake.png" x={{300+e["proj"][0]*5}} y={{300+e["proj"][1]*5}} height="25" width="25" />
                     </g>
                     {% endfor %}
 
 
                     {% for e in events["tsunamis"] %}
                     <g>
-                        <text style="font-size: 25px" x={{300+e["proj"][0]*4}} y={{250+e["proj"][1]*4}}>🌊</text>
+                        <text style="font-size: 25px" x={{300+e["proj"][0]*5}} y={{300+e["proj"][1]*5}}>🌊</text>
                     </g>
                     {% endfor %}
 
 
                     {% for e in events["volcanos"] %}
                     <g>
-                        <text style="font-size: 25px" x={{300+e["proj"][0]*4}} y={{250+e["proj"][1]*4}}>🌋</text>
+                        <text style="font-size: 25px" x={{300+e["proj"][0]*5}} y={{300+e["proj"][1]*5}}>🌋</text>
                     </g>
                     {% endfor %}
                  </svg>
