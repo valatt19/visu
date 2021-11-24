@@ -2,6 +2,7 @@
 <html>
     <head>
         <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/topnav.css') }}">
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/location.css') }}">
         <title>Disasters location</title>
     </head>
     <body>
@@ -19,17 +20,77 @@
         </div>
 
         <div class="summary">
-            <h1>Summary</h1>
-            <p>Volcanos: {{summary[0]}}</p>
-            <p>Earthquakes: {{summary[1]}}</p>
-            <p>Tsunamis: {{summary[2]}}</p>
+           <h3>Summary</h3>
+
+            <p>Volcanos: {{summary[0]}} <br />
+                Earthquakes: {{summary[1]}} <br />
+                Tsunamis: {{summary[2]}}</p>
+            <!-- dispaly the damage only if define -->
+            {% if info is defined and info|length %}
+                <table>
+                    <tr>
+                        <th>Damage</th>
+                        <th>Damage in millions</th>
+                    </tr>
+                    {% for damage, number in info.items() %}
+                        <tr>
+                            <td>{{ damage }}</td>
+                            <td>{{ number }}</td>
+                        </tr>
+
+                    {% endfor %}
+                </table>
+            {% endif %}
         </div>
 
         <div class="visu">
             <div class="circles"></div>
             <div class="timeline"></div>
         </div>
+        <div class="detail">
 
-        <div class="detail"></div>
+        {% set value_id = 0 %}
+            {% if events is defined and events|length > 3 %}
+                <!--check is the event is a earthquakes -->
+                {% set name_event = "earthquakes"  %}
+                {% if name_event in events %}
+                    {% for i in events[name_event] %}
+                        {% if value_id in events["earthquakes"][i].values() %}
+                            {% for attribut, value in events["earthquakes"][i].items() %}
+                                 {{ attribut }} : {{ value }}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+                <!--check is the event is a volcanos -->
+                {% set name_event = "volcanos" %}
+                {% if name_event in events %}
+                    {% for i in events[name_event] %}
+                        {% if value_id in events[name_event][i].values() %}
+                            {% for attribut, value in events[name_event][i].items() %}
+                                 {{ attribut }} : {{ value }}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+                <!--check is the event is a volcanos -->
+                {% set name_event = "tsunamis" %}
+                {% if name_event in events %}
+                    {% for i in events[name_event] %}
+                        {% if value_id in events[name_event][i].values() %}
+                            {% for attribut, value in events[name_event][i].items() %}
+                                 {{ attribut }} : {{ value }}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+            {% endif %}
+
+        </div>
+
+
     </body>
 </html>
