@@ -27,7 +27,22 @@ def location():
         nb_volcanos = len(events["volcanos"])
         nb_tsunamis = len(events["tsunamis"])
 
-        return render_template("location.html",summary=[nb_volcanos,nb_earthquakes,nb_tsunamis],events = events)
+        #info contains the sum of the damage("damageMillionsDollars", "deaths", "damageAmountOrder",
+        # "deathsAmountOrder", "deathsAmountOrder", "housesDestroyedAmountOrder")
+        info = dict()
+
+        for event_type, event in events.items():
+            for i in event:
+                for title, containt in i.items():
+                    if title in ["damageMillionsDollars", "deaths", "damageAmountOrder", "deathsAmountOrder",
+                         "deathsAmountOrder", "housesDestroyedAmountOrder"]:
+                        if title in info:
+                            info[title] = info[title] + int(containt)
+                        else:
+                            info[title] = int(containt)
+
+        return render_template("location.html", summary=[nb_volcanos, nb_earthquakes, nb_tsunamis], events=events, info=info)
+
 
     return redirect(url_for("index"))
 
