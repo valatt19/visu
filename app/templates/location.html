@@ -96,9 +96,53 @@
         </div>
 
         <div class="details">
-            <h1>Details</h1>
+            <h3>Details</h3>
+            <div class="detail">
+
+        {% set value_id = 0 %}
+            {% if events is defined and events|length > 3 %}
+                <!--check is the event is a earthquakes -->
+                {% set name_event = "earthquakes"  %}
+                {% if name_event in events %}
+                    {% for i in events[name_event] %}
+                        {% if value_id in events["earthquakes"][i].values() %}
+                            {% for attribut, value in events["earthquakes"][i].items() %}
+                                 {{ attribut }} : {{ value }}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+                <!--check is the event is a volcanos -->
+                {% set name_event = "volcanos" %}
+                {% if name_event in events %}
+                    {% for i in events[name_event] %}
+                        {% if value_id in events[name_event][i].values() %}
+                            {% for attribut, value in events[name_event][i].items() %}
+                                 {{ attribut }} : {{ value }}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+                <!--check is the event is a volcanos -->
+                {% set name_event = "tsunamis" %}
+                {% if name_event in events %}
+                    {% for i in events[name_event] %}
+                        {% if value_id in events[name_event][i].values() %}
+                            {% for attribut, value in events[name_event][i].items() %}
+                                 {{ attribut }} : {{ value }}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+            {% endif %}
+
         </div>
 
-        <div class="detail"></div>
+        </div>
+
+
     </body>
 </html>
