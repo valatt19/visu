@@ -1,5 +1,14 @@
 import geopy.distance as dist
-import json
+import json 
+
+import pyproj
+geodesic = pyproj.Geod(ellps='WGS84')
+
+from math import sin, cos, radians, pi
+def point_pos(x0, y0, d, theta):
+    theta_rad = pi + radians(theta)
+    return x0 + d*cos(theta_rad), y0 + d*sin(theta_rad)
+
 
 def compute_distance(coord1, coord2):
     """ Computes a distance in KM between two coordinates
@@ -13,8 +22,21 @@ def compute_distance(coord1, coord2):
     -------
     - distance (float) : distance in KM between the two coordinates
     """
-
     return dist.distance(coord1, coord2).km
+
+def compute_bearing(coord1, coord2):
+    """ Computes a bearing between two coordinates
+
+    Parameters
+    ----------
+    - coord1 (list) : [latitude, longitude] of the first place
+    - coord2 (list) : [latitude, longitude] of the second place
+
+    Returns
+    -------
+    - bearing (float) : distance in KM between the two coordinates
+    """
+    return geodesic.inv(coord1[0], coord1[1], coord2[0], coord2[1])[0]
 
 def get_events_in_radius(coord,radius):
     """ Gets all the events that happened in the radius of a place
@@ -56,6 +78,8 @@ def get_events_in_radius(coord,radius):
                 # Complete the infos of an event with the helper dataset
                 eq_event = earthquake
                 eq_event["distance"] = eq_distance
+                eq_event["bearing"] = compute_bearing(coord,eq_coord)
+                eq_event["proj"] = point_pos(0,0,eq_distance,eq_event["bearing"])
 
                 if "intensity" in earthquake :
                     eq_event["intensity"] = hd["earthquakes"]["intensity"][earthquake["intensity"]-1]
@@ -94,6 +118,8 @@ def get_events_in_radius(coord,radius):
                 # Complete the infos of an event with the helper dataset
                 ts_event = tsunami
                 ts_event["distance"] = ts_distance
+                ts_event["bearing"] = compute_bearing(coord,ts_coord)
+                ts_event["proj"] = point_pos(0,0,ts_distance,ts_event["bearing"])
 
                 if "causeCode" in tsunami :
                     for c in hd["tsunamis"]["causes"]:
@@ -135,6 +161,8 @@ def get_events_in_radius(coord,radius):
                 volcanos_id.append(volcano["id"])
                 vlocation = volcano
                 vlocation["distance"] = vl_distance
+                vlocation["bearing"] = compute_bearing(coord,vl_coord)
+                vlocation["proj"] = point_pos(0,0,vl_distance,vlocation["bearing"])
                 vlocation["erruptions"] = []
 
                 events["volcanos"].append(vlocation)

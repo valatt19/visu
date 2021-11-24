@@ -3,6 +3,9 @@
     <head>
         <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/topnav.css') }}">
         <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/location.css') }}">
+        <script type = "text/javascript" src = "https://d3js.org/d3.v4.min.js"></script>
+
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/location.css') }}">
         <title>Disasters location</title>
     </head>
     <body>
@@ -43,54 +46,59 @@
             {% endif %}
         </div>
 
-        <div class="visu">
-            <div class="circles"></div>
-            <div class="timeline"></div>
+        <div class="visu" style="text-align:center">
+            <h1>[ {{coord[0]}} ; {{coord[1]}} ]</h1>
+            <div class="circles" style="text-align:center;">
+                <svg width = "600" height = "600" style="border:2px solid black">
+                    <g>
+                        <image xlink:href="/static/img/nord.png" x=500 y=60 height="35" width="35" />
+                    </g>
+                    <g>
+                        <circle style="fill: #ffffff" stroke="black" stroke-width="2" cx=300 cy=300 r=250></circle>
+                    </g>
+                    <g>
+                        <text stroke="black" style="font-size: 12px" x=555 y=300>50km</text>
+                    </g>
+                    <g>
+                        <circle style="fill: #ffffff" stroke="black" stroke-width="2" cx=300 cy=300 r=125></circle>
+                    </g>
+                    <g>
+                        <text stroke="black" style="font-size: 12px" x=430 y=300>25km</text>
+                    </g>
+                    <g>
+                        <circle style="fill: #ff0000" stroke="black" cx=300 cy=300 r=5></circle>
+                    </g>
+
+                    {% for e in events["earthquakes"] %}
+                    <g>
+                        <image xlink:href="/static/img/icon_earthquake.png" x={{300+e["proj"][0]*5}} y={{300+e["proj"][1]*5}} height="25" width="25" />
+                    </g>
+                    {% endfor %}
+
+
+                    {% for e in events["tsunamis"] %}
+                    <g>
+                        <text style="font-size: 25px" x={{300+e["proj"][0]*5}} y={{300+e["proj"][1]*5}}>🌊</text>
+                    </g>
+                    {% endfor %}
+
+
+                    {% for e in events["volcanos"] %}
+                    <g>
+                        <text style="font-size: 25px" x={{300+e["proj"][0]*5}} y={{300+e["proj"][1]*5}}>🌋</text>
+                    </g>
+                    {% endfor %}
+                 </svg>
+
+            </div>
+            <div class="timeline">
+            </div>
         </div>
-        <div class="detail">
-        <!--VAL TU MODIFIERA "value_id" pour AFFCIHER LES DETAILS ##### -->
-        {% set value_id = 0 %}
-            {% if events is defined and events|length > 3 %}
-                <!--check is the event is a earthquakes -->
-                {% set name_event = "earthquakes"  %}
-                {% if name_event in events %}
-                    {% for i in events[name_event] %}
-                        {% if value_id in events["earthquakes"][i].values() %}
-                            {% for attribut, value in events["earthquakes"][i].items() %}
-                                 {{ attribut }} : {{ value }}
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
 
-                <!--check is the event is a volcanos -->
-                {% set name_event = "volcanos" %}
-                {% if name_event in events %}
-                    {% for i in events[name_event] %}
-                        {% if value_id in events[name_event][i].values() %}
-                            {% for attribut, value in events[name_event][i].items() %}
-                                 {{ attribut }} : {{ value }}
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-
-                <!--check is the event is a volcanos -->
-                {% set name_event = "tsunamis" %}
-                {% if name_event in events %}
-                    {% for i in events[name_event] %}
-                        {% if value_id in events[name_event][i].values() %}
-                            {% for attribut, value in events[name_event][i].items() %}
-                                 {{ attribut }} : {{ value }}
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-
-            {% endif %}
-
+        <div class="details">
+            <h1>Details</h1>
         </div>
 
-
+        <div class="detail"></div>
     </body>
 </html>

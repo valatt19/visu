@@ -18,11 +18,12 @@ def index():
 # Visualisation (for  a location) ##########################
 @app.route("/location/", methods=["GET","POST"])
 def location():
+    # Get the coordinates indicated by the user
     if request.args.get("lat", None) and request.args.get("long", None):
         coord = (request.args["lat"],request.args["long"])
 
         # Get all the events in the radius of a location 
-        events = get_events_in_radius(coord,100)
+        events = get_events_in_radius(coord,50)
         nb_earthquakes = len(events["earthquakes"])
         nb_volcanos = len(events["volcanos"])
         nb_tsunamis = len(events["tsunamis"])
@@ -41,8 +42,7 @@ def location():
                         else:
                             info[title] = int(containt)
 
-        return render_template("location.html", summary=[nb_volcanos, nb_earthquakes, nb_tsunamis], events=events, info=info)
-
+        return render_template("location.html", summary=[nb_volcanos, nb_earthquakes, nb_tsunamis], events=events, info=info, coord=coord)
 
     return redirect(url_for("index"))
 
