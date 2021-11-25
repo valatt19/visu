@@ -1,12 +1,11 @@
 import geopy.distance as dist
 import json 
 
-import pyproj
-geodesic = pyproj.Geod(ellps='WGS84')
+from geographiclib.geodesic import Geodesic
 
 from math import sin, cos, radians, pi
 def point_pos(x0, y0, d, theta):
-    theta_rad = pi + radians(theta)
+    theta_rad = 3*pi/2 + radians(theta)
     return x0 + d*cos(theta_rad), y0 + d*sin(theta_rad)
 
 
@@ -36,7 +35,7 @@ def compute_bearing(coord1, coord2):
     -------
     - bearing (float) : distance in KM between the two coordinates
     """
-    return geodesic.inv(coord1[0], coord1[1], coord2[0], coord2[1])[0]
+    return Geodesic.WGS84.Inverse(float(coord1[0]), float(coord1[1]), float(coord2[0]), float(coord2[1]))['azi1']
 
 def get_events_in_radius(coord,radius):
     """ Gets all the events that happened in the radius of a place
@@ -120,7 +119,7 @@ def get_events_in_radius(coord,radius):
                 ts_event["distance"] = ts_distance
                 ts_event["bearing"] = compute_bearing(coord,ts_coord)
                 ts_event["proj"] = point_pos(0,0,ts_distance,ts_event["bearing"])
-
+                
                 if "causeCode" in tsunami :
                     for c in hd["tsunamis"]["causes"]:
                         if str(tsunami["causeCode"]) == c["id"]:
