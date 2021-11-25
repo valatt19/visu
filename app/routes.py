@@ -35,8 +35,7 @@ def location():
         for event_type, event in events.items():
             for i in event:
                 for title, containt in i.items():
-                    if title in ["damageMillionsDollars", "deaths", "damageAmountOrder", "deathsAmountOrder",
-                         "deathsAmountOrder", "housesDestroyedAmountOrder"]:
+                    if title in ["damages", "deaths", "housesDamaged", "injuries"]:
                         if title in info:
                             info[title] = info[title] + int(containt)
                         else:

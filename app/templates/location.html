@@ -33,13 +33,21 @@
                 <table>
                     <tr>
                         <th>Damage</th>
-                        <th>Damage in millions</th>
+                        <th>Damage </th>
                     </tr>
                     {% for damage, number in info.items() %}
-                        <tr>
-                            <td>{{ damage }}</td>
-                            <td>{{ number }}</td>
-                        </tr>
+                        {% if damage == "damages" %}
+                            <tr>
+                                <td>{{ damage }}</td>
+                                <td>{{ number }} M $</td>
+                           </tr>
+                        {% else %}
+
+                            <tr>
+                                <td>{{ damage }}</td>
+                                <td>{{ number }}</td>
+                            </tr>
+                        {% endif %}
 
                     {% endfor %}
                 </table>
