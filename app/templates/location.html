@@ -3,6 +3,7 @@
     <head>
         <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/topnav.css') }}">
         <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/location.css') }}">
+        
         <script type = "text/javascript" src = "https://d3js.org/d3.v4.min.js"></script>
 
         <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/location.css') }}">
@@ -59,7 +60,7 @@
             <div class="circles" style="text-align:center;">
                 <svg width = "600" height = "600" style="border:2px solid black">
                     <g>
-                        <image xlink:href="/static/img/nord.png" x=500 y=60 height="35" width="35" />
+                        <image href="/static/img/nord.png" x=500 y=60 height="35" width="35" />
                     </g>
                     <g>
                         <circle style="fill: #ffffff" stroke="black" stroke-width="2" cx=300 cy=300 r=250></circle>
@@ -78,22 +79,22 @@
                     </g>
 
                     {% for e in events["earthquakes"] %}
-                    <g>
-                        <image xlink:href="/static/img/icon_earthquake.png" x={{300+e["proj"][0]*5}} y={{300+e["proj"][1]*5}} height="25" width="25" />
+                    <g class="pointer">
+                        <image href="/static/img/icon_earthquake.png" x={{288+e["proj"][0]*5}} y={{288+e["proj"][1]*5}} height="25" width="25" onclick="showDetails('e','{{ loop.index }}')"/>
                     </g>
                     {% endfor %}
 
 
                     {% for e in events["tsunamis"] %}
-                    <g>
-                        <text style="font-size: 25px" x={{300+e["proj"][0]*5}} y={{300+e["proj"][1]*5}}>🌊</text>
+                    <g class="pointer">
+                        <text style="font-size: 25px" x={{290+e["proj"][0]*5}} y={{310+e["proj"][1]*5}} onclick="showDetails('t','{{ loop.index }}')">🌊</text>
                     </g>
                     {% endfor %}
 
 
                     {% for e in events["volcanos"] %}
-                    <g>
-                        <text style="font-size: 25px" x={{300+e["proj"][0]*5}} y={{300+e["proj"][1]*5}}>🌋</text>
+                    <g class="pointer">
+                        <text style="font-size: 25px" x={{290+e["proj"][0]*5}} y={{310+e["proj"][1]*5}} onclick="showDetails('v','{{ loop.index }}')">🌋</text>
                     </g>
                     {% endfor %}
                  </svg>
@@ -105,6 +106,33 @@
 
         <div class="details">
             <h3>Details</h3>
+            <div id="details">
+                {% for e in events["earthquakes"] %}
+                <div id="e{{loop.index}}" style="display:none">
+                    {% for attribut, value in events["earthquakes"][loop.index-1].items() %}
+                        {{ attribut }} : {{ value }}
+                    {% endfor %}
+                </div>
+                {% endfor %}
+
+                {% for e in events["tsunamis"] %}
+                <div id="t{{loop.index}}" style="display:none">
+                    {% for attribut, value in events["tsunamis"][loop.index-1].items() %}
+                        {{ attribut }} : {{ value }}
+                    {% endfor %}
+                </div>
+                {% endfor %}
+
+                {% for e in events["volcanos"] %}
+                <div id="v{{loop.index}}" style="display:none">
+                    {% for attribut, value in events["volcanos"][loop.index-1].items() %}
+                        {{ attribut }} : {{ value }}
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
             <div class="detail">
 
         {% set value_id = 0 %}
@@ -149,8 +177,8 @@
 
         </div>
 
-        </div>
 
 
+        <script type="text/javascript" src="/static/js/details.js"></script>
     </body>
 </html>
