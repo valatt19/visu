@@ -107,27 +107,34 @@
         <div class="details">
             <h3>Details</h3>
             <div id="details">
+
                 {% for e in events["earthquakes"] %}
                 <div id="e{{loop.index}}" style="display:none">
+                    <ul>
                     {% for attribut, value in events["earthquakes"][loop.index-1].items() %}
-                        {{ attribut }} : {{ value }}
+                        <li>{{ attribut }} : {{ value }}</li>
                     {% endfor %}
+                    </ul>
                 </div>
                 {% endfor %}
 
                 {% for e in events["tsunamis"] %}
                 <div id="t{{loop.index}}" style="display:none">
+                    <ul>
                     {% for attribut, value in events["tsunamis"][loop.index-1].items() %}
-                        {{ attribut }} : {{ value }}
+                        <li>{{ attribut }} : {{ value }}</li>
                     {% endfor %}
+                    </ul>
                 </div>
                 {% endfor %}
 
                 {% for e in events["volcanos"] %}
                 <div id="v{{loop.index}}" style="display:none">
+                    <ul>
                     {% for attribut, value in events["volcanos"][loop.index-1].items() %}
-                        {{ attribut }} : {{ value }}
+                        <li>{{ attribut }} : {{ value }}</li>
                     {% endfor %}
+                    </ul>
                 </div>
                 {% endfor %}
             </div>
