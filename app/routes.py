@@ -35,7 +35,26 @@ def location():
 # Visualisation (for comparison) ##########################
 @app.route("/comparaison/", methods=["GET","POST"])
 def comparaison():
-    return render_template("comparaison.html")
+     # Get the coordinates indicated by the user
+    if request.args.get("lat", None) and request.args.get("long", None) and request.args.get("lat2", None) and request.args.get("long2", None):
+        coord = (request.args["lat"],request.args["long"])
+        coord2 = (request.args["lat2"],request.args["long2"])
+
+        # Get all the events in the radius of the 1st location
+        events = get_events_in_radius(coord,50)
+        nb_earthquakes = len(events["earthquakes"])
+        nb_volcanos = len(events["volcanos"])
+        nb_tsunamis = len(events["tsunamis"])
+
+        # Get all the events in the radius of the 2nd location
+        events2 = get_events_in_radius(coord2,50)
+        nb_earthquakes2 = len(events2["earthquakes"])
+        nb_volcanos2 = len(events2["volcanos"])
+        nb_tsunamis2 = len(events2["tsunamis"])
+
+        return render_template("comparaison.html",summary=[nb_volcanos,nb_earthquakes,nb_tsunamis,nb_volcanos2,nb_earthquakes2,nb_tsunamis2],events = [events,events2], coord=[coord,coord2])
+
+    return redirect(url_for("index"))
 
 #######
 # RUN #
