@@ -10,7 +10,7 @@
         <div class="topnav">
             <a href="/">Home</a>
             <div class="search">
-                <form action="/comparaison/" method="POST">
+                <form action="/comparaison/" method="GET">
                     <label for="lat">[1] Latitude: </label>
                     <input type="number" step="0.0001" id="lat" name="lat">
                     <label for="long">[1] Longitude: </label>
@@ -24,10 +24,149 @@
             </div>
         </div>
 
-        <div class="place"></div>
+        <div class="place">
+            {% if nb_places > 0 %}
+            <h1>[ {{coord[0][0]}} ; {{coord[0][1]}} ]</h1>
+            <div class="circles" style="text-align:center;">
+                <svg width = "600" height = "600" style="border:2px solid black">
+                    <g>
+                        <image href="/static/img/nord.png" x=500 y=60 height="35" width="35" />
+                    </g>
+                    <g>
+                        <circle style="fill: #ffffff" stroke="black" stroke-width="2" cx=300 cy=300 r=250></circle>
+                    </g>
+                    <g>
+                        <text stroke="black" style="font-size: 12px" x=555 y=300>50km</text>
+                    </g>
+                    <g>
+                        <circle style="fill: #ffffff" stroke="black" stroke-width="2" cx=300 cy=300 r=125></circle>
+                    </g>
+                    <g>
+                        <text stroke="black" style="font-size: 12px" x=430 y=300>25km</text>
+                    </g>
+                    <g>
+                        <circle style="fill: #ff0000" stroke="black" cx=300 cy=300 r=5></circle>
+                    </g>
 
-        <div class="summary"></div>
+                    {% for e in events[0]["earthquakes"] %}
+                    <g class="pointer">
+                        <image href="/static/img/icon_earthquake.png" x={{288+e["proj"][0]*5}} y={{288+e["proj"][1]*5}} height="25" width="25"/>
+                    </g>
+                    {% endfor %}
 
-        <div class="place"></div>
+
+                    {% for e in events[0]["tsunamis"] %}
+                    <g class="pointer">
+                        <text style="font-size: 25px" x={{290+e["proj"][0]*5}} y={{310+e["proj"][1]*5}} >🌊</text>
+                    </g>
+                    {% endfor %}
+
+
+                    {% for e in events[0]["volcanos"] %}
+                    <g class="pointer">
+                        <text style="font-size: 25px" x={{290+e["proj"][0]*5}} y={{310+e["proj"][1]*5}} >🌋</text>
+                    </g>
+                    {% endfor %}
+                 </svg>
+
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="summary">
+            <h3>Volcanos</h3>
+            <table>
+                <tr>
+                    <td>
+                    {% if nb_places > 0 %}
+                        {{summary[0]}}
+                    {% endif %}
+                    </td>
+                    <td>
+                    {% if nb_places > 1 %}
+                        {{summary[3]}}
+                    {% endif %}    
+                    </td>
+                </tr>
+            </table>
+            <h3>Earthquakes</h3>
+            <table>
+                <tr>
+                    <td>
+                    {% if nb_places > 0 %}
+                        {{summary[1]}}
+                    {% endif %}
+                    </td>
+                    <td>
+                    {% if nb_places > 1 %}
+                        {{summary[4]}}
+                    {% endif %}    
+                    </td>
+                </tr>
+            </table>
+            <h3>Tsunamis</h3>
+            <table>
+                <tr>
+                    <td>
+                    {% if nb_places > 0 %}
+                        {{summary[2]}}
+                    {% endif %}
+                    </td>
+                    <td>
+                    {% if nb_places > 1 %}
+                        {{summary[5]}}
+                    {% endif %}    
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="place">
+            {% if nb_places > 1 %}
+            <h1>[ {{coord[1][0]}} ; {{coord[1][1]}} ]</h1>
+            <div class="circles" style="text-align:center;">
+                <svg width = "600" height = "600" style="border:2px solid black">
+                    <g>
+                        <image href="/static/img/nord.png" x=500 y=60 height="35" width="35" />
+                    </g>
+                    <g>
+                        <circle style="fill: #ffffff" stroke="black" stroke-width="2" cx=300 cy=300 r=250></circle>
+                    </g>
+                    <g>
+                        <text stroke="black" style="font-size: 12px" x=555 y=300>50km</text>
+                    </g>
+                    <g>
+                        <circle style="fill: #ffffff" stroke="black" stroke-width="2" cx=300 cy=300 r=125></circle>
+                    </g>
+                    <g>
+                        <text stroke="black" style="font-size: 12px" x=430 y=300>25km</text>
+                    </g>
+                    <g>
+                        <circle style="fill: #ff0000" stroke="black" cx=300 cy=300 r=5></circle>
+                    </g>
+
+                    {% for e in events[1]["earthquakes"] %}
+                    <g class="pointer">
+                        <image href="/static/img/icon_earthquake.png" x={{288+e["proj"][0]*5}} y={{288+e["proj"][1]*5}} height="25" width="25"/>
+                    </g>
+                    {% endfor %}
+
+
+                    {% for e in events[1]["tsunamis"] %}
+                    <g class="pointer">
+                        <text style="font-size: 25px" x={{290+e["proj"][0]*5}} y={{310+e["proj"][1]*5}} >🌊</text>
+                    </g>
+                    {% endfor %}
+
+
+                    {% for e in events[1]["volcanos"] %}
+                    <g class="pointer">
+                        <text style="font-size: 25px" x={{290+e["proj"][0]*5}} y={{310+e["proj"][1]*5}} >🌋</text>
+                    </g>
+                    {% endfor %}
+                 </svg>
+            </div>
+            {% endif %}
+        </div>
     </body>
 </html>

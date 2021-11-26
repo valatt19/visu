@@ -65,9 +65,9 @@ def comparaison():
         nb_volcanos2 = len(events2["volcanos"])
         nb_tsunamis2 = len(events2["tsunamis"])
 
-        return render_template("comparaison.html",summary=[nb_volcanos,nb_earthquakes,nb_tsunamis,nb_volcanos2,nb_earthquakes2,nb_tsunamis2],events = [events,events2], coord=[coord,coord2])
+        return render_template("comparaison.html",nb_places=2,summary=[nb_volcanos,nb_earthquakes,nb_tsunamis,nb_volcanos2,nb_earthquakes2,nb_tsunamis2],events = [events,events2], coord=[coord,coord2])
 
-    return redirect(url_for("index"))
+    return render_template("comparaison.html",nb_places=0)
 
 #######
 # RUN #
