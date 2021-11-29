@@ -16,14 +16,15 @@ def index():
     return render_template("homepage.html")
 
 # Visualisation (for  a location) ##########################
-@app.route("/location/", methods=["GET","POST"])
-def location():
+@app.route("/location/", defaults={"scale": 50}, methods=["GET","POST"])
+@app.route("/location/<int:scale>/", methods=["GET","POST"])
+def location(scale):
     # Get the coordinates indicated by the user
     if request.args.get("lat", None) and request.args.get("long", None):
         coord = (request.args["lat"],request.args["long"])
 
         # Get all the events in the radius of a location 
-        events = get_events_in_radius(coord,50)
+        events = get_events_in_radius(coord,scale)
         nb_earthquakes = len(events["earthquakes"])
         nb_volcanos = len(events["volcanos"])
         nb_tsunamis = len(events["tsunamis"])
@@ -41,31 +42,32 @@ def location():
                         else:
                             info[title] = int(containt)
 
-        return render_template("location.html", summary=[nb_volcanos, nb_earthquakes, nb_tsunamis], events=events, info=info, coord=coord)
+        return render_template("location.html", summary=[nb_volcanos, nb_earthquakes, nb_tsunamis], events=events, info=info, coord=coord, scale=scale, semi_scale=int(scale/2))
 
     return redirect(url_for("index"))
 
 # Visualisation (for comparison) ##########################
-@app.route("/comparaison/", methods=["GET","POST"])
-def comparaison():
+@app.route("/comparaison/", defaults={"scale": 50}, methods=["GET","POST"])
+@app.route("/comparaison/<int:scale>/", methods=["GET","POST"])
+def comparaison(scale):
      # Get the coordinates indicated by the user
     if request.args.get("lat", None) and request.args.get("long", None) and request.args.get("lat2", None) and request.args.get("long2", None):
         coord = (request.args["lat"],request.args["long"])
         coord2 = (request.args["lat2"],request.args["long2"])
 
         # Get all the events in the radius of the 1st location
-        events = get_events_in_radius(coord,50)
+        events = get_events_in_radius(coord,scale)
         nb_earthquakes = len(events["earthquakes"])
         nb_volcanos = len(events["volcanos"])
         nb_tsunamis = len(events["tsunamis"])
 
         # Get all the events in the radius of the 2nd location
-        events2 = get_events_in_radius(coord2,50)
+        events2 = get_events_in_radius(coord2,scale)
         nb_earthquakes2 = len(events2["earthquakes"])
         nb_volcanos2 = len(events2["volcanos"])
         nb_tsunamis2 = len(events2["tsunamis"])
 
-        return render_template("comparaison.html",nb_places=2,summary=[nb_volcanos,nb_earthquakes,nb_tsunamis,nb_volcanos2,nb_earthquakes2,nb_tsunamis2],events = [events,events2], coord=[coord,coord2])
+        return render_template("comparaison.html",nb_places=2,summary=[nb_volcanos,nb_earthquakes,nb_tsunamis,nb_volcanos2,nb_earthquakes2,nb_tsunamis2],events = [events,events2], coord=[coord,coord2],scale=scale, semi_scale=int(scale/2))
 
     return render_template("comparaison.html",nb_places=0)
 

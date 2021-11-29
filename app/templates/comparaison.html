@@ -36,13 +36,13 @@
                         <circle style="fill: #ffffff" stroke="black" stroke-width="2" cx=300 cy=300 r=250></circle>
                     </g>
                     <g>
-                        <text stroke="black" style="font-size: 12px" x=555 y=300>50km</text>
+                        <text stroke="black" style="font-size: 12px" x=555 y=300>{{scale}}km</text>
                     </g>
                     <g>
                         <circle style="fill: #ffffff" stroke="black" stroke-width="2" cx=300 cy=300 r=125></circle>
                     </g>
                     <g>
-                        <text stroke="black" style="font-size: 12px" x=430 y=300>25km</text>
+                        <text stroke="black" style="font-size: 12px" x=430 y=300>{{semi_scale}}km</text>
                     </g>
                     <g>
                         <circle style="fill: #ff0000" stroke="black" cx=300 cy=300 r=5></circle>
@@ -50,21 +50,21 @@
 
                     {% for e in events[0]["earthquakes"] %}
                     <g class="pointer">
-                        <image href="/static/img/icon_earthquake.png" x={{288+e["proj"][0]*5}} y={{288+e["proj"][1]*5}} height="25" width="25"/>
+                        <image href="/static/img/icon_earthquake.png" x={{288+e["proj"][0]*250/scale}} y={{288+e["proj"][1]*250/scale}} height="25" width="25"/>
                     </g>
                     {% endfor %}
 
 
                     {% for e in events[0]["tsunamis"] %}
                     <g class="pointer">
-                        <text style="font-size: 25px" x={{290+e["proj"][0]*5}} y={{310+e["proj"][1]*5}} >🌊</text>
+                        <text style="font-size: 25px" x={{290+e["proj"][0]*250/scale}} y={{310+e["proj"][1]*250/scale}} >🌊</text>
                     </g>
                     {% endfor %}
 
 
                     {% for e in events[0]["volcanos"] %}
                     <g class="pointer">
-                        <text style="font-size: 25px" x={{290+e["proj"][0]*5}} y={{310+e["proj"][1]*5}} >🌋</text>
+                        <text style="font-size: 25px" x={{290+e["proj"][0]*250/scale}} y={{310+e["proj"][1]*250/scale}} >🌋</text>
                     </g>
                     {% endfor %}
                  </svg>
@@ -119,6 +119,14 @@
                     </td>
                 </tr>
             </table>
+
+            <h3>Radius</h3>
+            <a href = "/comparaison/10/?lat={{coord[0][0]}}&long={{coord[0][1]}}&lat2={{coord[1][0]}}&long2={{coord[1][1]}}"> 10km </a>
+            <a href = "/comparaison/20/?lat={{coord[0][0]}}&long={{coord[0][1]}}&lat2={{coord[1][0]}}&long2={{coord[1][1]}}"> 20km </a>
+            <a href = "/comparaison/30/?lat={{coord[0][0]}}&long={{coord[0][1]}}&lat2={{coord[1][0]}}&long2={{coord[1][1]}}"> 30km </a>
+            <a href = "/comparaison/40/?lat={{coord[0][0]}}&long={{coord[0][1]}}&lat2={{coord[1][0]}}&long2={{coord[1][1]}}"> 40km </a>
+            <a href = "/comparaison/50/?lat={{coord[0][0]}}&long={{coord[0][1]}}&lat2={{coord[1][0]}}&long2={{coord[1][1]}}"> 50km </a>
+            
         </div>
 
         <div class="place">
@@ -133,13 +141,13 @@
                         <circle style="fill: #ffffff" stroke="black" stroke-width="2" cx=300 cy=300 r=250></circle>
                     </g>
                     <g>
-                        <text stroke="black" style="font-size: 12px" x=555 y=300>50km</text>
+                        <text stroke="black" style="font-size: 12px" x=555 y=300>{{scale}}km</text>
                     </g>
                     <g>
                         <circle style="fill: #ffffff" stroke="black" stroke-width="2" cx=300 cy=300 r=125></circle>
                     </g>
                     <g>
-                        <text stroke="black" style="font-size: 12px" x=430 y=300>25km</text>
+                        <text stroke="black" style="font-size: 12px" x=430 y=300>{{semi_scale}}km</text>
                     </g>
                     <g>
                         <circle style="fill: #ff0000" stroke="black" cx=300 cy=300 r=5></circle>
@@ -147,21 +155,21 @@
 
                     {% for e in events[1]["earthquakes"] %}
                     <g class="pointer">
-                        <image href="/static/img/icon_earthquake.png" x={{288+e["proj"][0]*5}} y={{288+e["proj"][1]*5}} height="25" width="25"/>
+                        <image href="/static/img/icon_earthquake.png" x={{288+e["proj"][0]*250/scale}} y={{288+e["proj"][1]*250/scale}} height="25" width="25"/>
                     </g>
                     {% endfor %}
 
 
                     {% for e in events[1]["tsunamis"] %}
                     <g class="pointer">
-                        <text style="font-size: 25px" x={{290+e["proj"][0]*5}} y={{310+e["proj"][1]*5}} >🌊</text>
+                        <text style="font-size: 25px" x={{290+e["proj"][0]*250/scale}} y={{310+e["proj"][1]*250/scale}} >🌊</text>
                     </g>
                     {% endfor %}
 
 
                     {% for e in events[1]["volcanos"] %}
                     <g class="pointer">
-                        <text style="font-size: 25px" x={{290+e["proj"][0]*5}} y={{310+e["proj"][1]*5}} >🌋</text>
+                        <text style="font-size: 25px" x={{290+e["proj"][0]*250/scale}} y={{310+e["proj"][1]*250/scale}} >🌋</text>
                     </g>
                     {% endfor %}
                  </svg>

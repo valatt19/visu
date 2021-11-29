@@ -66,40 +66,52 @@
                         <circle style="fill: #ffffff" stroke="black" stroke-width="2" cx=300 cy=300 r=250></circle>
                     </g>
                     <g>
-                        <text stroke="black" style="font-size: 12px" x=555 y=300>50km</text>
+                        <text stroke="black" style="font-size: 12px" x=555 y=300>{{scale}}km</text>
                     </g>
                     <g>
                         <circle style="fill: #ffffff" stroke="black" stroke-width="2" cx=300 cy=300 r=125></circle>
                     </g>
                     <g>
-                        <text stroke="black" style="font-size: 12px" x=430 y=300>25km</text>
+                        <text stroke="black" style="font-size: 12px" x=430 y=300>{{semi_scale}}km</text>
                     </g>
                     <g>
                         <circle style="fill: #ff0000" stroke="black" cx=300 cy=300 r=5></circle>
                     </g>
 
+                    <g>
+                        <text stroke="black" style="font-size: 15px" x=25 y=575>Scale :</text>
+                    </g>
+
+
                     {% for e in events["earthquakes"] %}
                     <g class="pointer">
-                        <image href="/static/img/icon_earthquake.png" x={{288+e["proj"][0]*5}} y={{288+e["proj"][1]*5}} height="25" width="25" onclick="showDetails('e','{{ loop.index }}')"/>
+                        <image href="/static/img/icon_earthquake.png" x={{288+e["proj"][0]*250/scale}} y={{288+e["proj"][1]*250/scale}} height="25" width="25" onclick="showDetails('e','{{ loop.index }}')"/>
                     </g>
                     {% endfor %}
 
 
                     {% for e in events["tsunamis"] %}
                     <g class="pointer">
-                        <text style="font-size: 25px" x={{290+e["proj"][0]*5}} y={{310+e["proj"][1]*5}} onclick="showDetails('t','{{ loop.index }}')">🌊</text>
+                        <text style="font-size: 25px" x={{290+e["proj"][0]*250/scale}} y={{310+e["proj"][1]*250/scale}} onclick="showDetails('t','{{ loop.index }}')">🌊</text>
                     </g>
                     {% endfor %}
 
 
                     {% for e in events["volcanos"] %}
                     <g class="pointer">
-                        <text style="font-size: 25px" x={{290+e["proj"][0]*5}} y={{310+e["proj"][1]*5}} onclick="showDetails('v','{{ loop.index }}')">🌋</text>
+                        <text style="font-size: 25px" x={{290+e["proj"][0]*250/scale}} y={{310+e["proj"][1]*250/scale}} onclick="showDetails('v','{{ loop.index }}')">🌋</text>
                     </g>
                     {% endfor %}
                  </svg>
-
             </div>
+
+            <a>Radius:</a>
+            <a href = "/location/10/?lat={{coord[0]}}&long={{coord[1]}}"> 10km </a>
+            <a href = "/location/20/?lat={{coord[0]}}&long={{coord[1]}}"> 20km </a>
+            <a href = "/location/30/?lat={{coord[0]}}&long={{coord[1]}}"> 30km </a>
+            <a href = "/location/40/?lat={{coord[0]}}&long={{coord[1]}}"> 40km </a>
+            <a href = "/location/50/?lat={{coord[0]}}&long={{coord[1]}}"> 50km </a>
+
             <div class="timeline">
             </div>
         </div>
