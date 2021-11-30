@@ -2,7 +2,7 @@ from app import app
 from flask import render_template, redirect
 from flask import url_for, request
 
-from app.datasets.datasets_methods import get_events_in_radius
+from app.datasets.datasets_methods import get_events_in_radius, get_timeline_events
 
 ##########
 # ROUTES #
@@ -42,7 +42,10 @@ def location(scale):
                         else:
                             info[title] = int(containt)
 
-        return render_template("location.html", summary=[nb_volcanos, nb_earthquakes, nb_tsunamis], events=events, info=info, coord=coord, scale=scale, semi_scale=int(scale/2))
+        # Get the infos for the timeline
+        timeline = get_timeline_events(events)
+
+        return render_template("location.html", summary=[nb_volcanos, nb_earthquakes, nb_tsunamis], events=events, info=info, coord=coord, scale=scale, semi_scale=int(scale/2),timeline=timeline)
 
     return redirect(url_for("index"))
 

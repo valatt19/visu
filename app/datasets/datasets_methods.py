@@ -198,3 +198,52 @@ def get_events_in_radius(coord,radius):
 
     # Finally, returns all the events            
     return events
+
+def get_timeline_events(events):
+    """ Gets a dict with all events where the keys are years
+
+    Parameters
+    ----------
+    - events (dict) : all the event that appened in the radius 
+
+    Returns
+    -------
+    - timeline (dict) : dict with all events where the keys are years and the values are list of events (type + index)
+        Example : {1966:[e1,v2,t1], 1789:[e3], ...}
+    """
+    # INIT
+    timeline = {}
+
+    # EARTHQUAKES
+    for i in range(len(events["earthquakes"])):
+        e = events["earthquakes"][i]
+        
+        # The event has an attribute year
+        if "year" in e:
+            id = "e"+ str(i)
+
+            # Append the list of events in a same year
+            if int(e["year"]) in timeline:
+                timeline[int(e["year"])].append(id)
+
+            # Create the value for this year
+            else:
+                timeline[int(e["year"])] = [id]
+
+    # TSUNAMIS
+    for i in range(len(events["tsunamis"])):
+        e = events["tsunamis"][i]
+        
+        # The event has an attribute year
+        if "year" in e:
+            id = "t"+ str(i)
+
+            # Append the list of events in a same year
+            if int(e["year"]) in timeline:
+                timeline[int(e["year"])].append(id)
+
+            # Create the value for this year
+            else:
+                timeline[int(e["year"])] = [id]
+    print(timeline)
+    return timeline
