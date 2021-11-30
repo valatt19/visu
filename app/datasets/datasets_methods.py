@@ -245,5 +245,25 @@ def get_timeline_events(events):
             # Create the value for this year
             else:
                 timeline[int(e["year"])] = [id]
+
+    # ERRUPTIONS
+    for i in range(len(events["volcanos"])):
+        v = events["volcanos"][i]
+        for j in range(len(v["erruptions"])):
+            e = v["erruptions"][j]
+        
+            # The event has an attribute year
+            if "year" in e:
+                id = "v"+ str(i) + str(j)
+
+                # Append the list of events in a same year
+                if int(e["year"]) in timeline:
+                    timeline[int(e["year"])].append(id)
+
+                # Create the value for this year
+                else:
+                    timeline[int(e["year"])] = [id]
+
+
     print(timeline)
     return timeline
