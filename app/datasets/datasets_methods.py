@@ -254,7 +254,7 @@ def get_timeline_events(events):
         
             # The event has an attribute year
             if "year" in e:
-                id = "v"+ str(i) + str(j)
+                id = "v"+ str(i) + "-" + str(j)
 
                 # Append the list of events in a same year
                 if int(e["year"]) in timeline:
@@ -264,6 +264,4 @@ def get_timeline_events(events):
                 else:
                     timeline[int(e["year"])] = [id]
 
-
-    print(timeline)
     return timeline
