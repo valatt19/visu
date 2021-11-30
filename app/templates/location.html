@@ -132,19 +132,19 @@
                       <line x1="535" y1="105" x2="535" y2="95" stroke="#000" stroke-width="1"/>
                       <line x1="560" y1="105" x2="560" y2="95" stroke="#000" stroke-width="1"/>       
                       
-                      {% for year,l in timeline.items() %}
+                      {% for year,list in timeline.items() %}
                         {% if year >= 1800 %}
                             <line x1="{{(year-1800)*2.5+10}}" y1="110" x2="{{(year-1800)*2.5+10}}" y2="90" stroke="#555" stroke-width="3"/>
-                            {% for elem in l %}     
-                            {% if elem[0] == "e" %}
-                            <image href="/static/img/icon_earthquake.png" x={{(year-1800)*2.5}} y=65 height="20" width="20" id={{elem}}/>
-                            {% endif %}
-                            {% if elem[0] == "t" %}
-                            <text style="font-size: 25px" x={{(year-1800)*2.5}} y=85 id={{elem}}>🌊</text>
-                            {% endif %}
-                            {% if elem[0] == "v" %}
-                            <text style="font-size: 25px" x={{(year-1800)*2.5}} y=85 id={{elem}}>🌋</text>
-                            {% endif %}
+                            {% for elem in list %}     
+                                {% if elem[0] == "e" %}
+                            <image href="/static/img/icon_earthquake.png" x={{(year-1800)*2.5}} y=65 height="20" width="20" id={{elem}}></image>
+                                {% endif %}
+                                {% if elem[0] == "t" %}
+                            <text style="font-size: 20px" x={{(year-1800)*2.5}} y=60 id={{elem}}>🌊</text>
+                                {% endif %}
+                                {% if elem[0] == "v" %}
+                            <text style="font-size: 20px" x={{(year-1800)*2.5}} y=60 id={{elem}}>🌋</text>
+                                {% endif %}
                             {% endfor %}
                         {% endif %}
                       {% endfor %}
