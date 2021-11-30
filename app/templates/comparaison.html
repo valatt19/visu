@@ -119,13 +119,14 @@
                     </td>
                 </tr>
             </table>
-
+            {% if nb_places > 1 %}
             <h3>Radius</h3>
             <a href = "/comparaison/10/?lat={{coord[0][0]}}&long={{coord[0][1]}}&lat2={{coord[1][0]}}&long2={{coord[1][1]}}"> 10km </a>
             <a href = "/comparaison/20/?lat={{coord[0][0]}}&long={{coord[0][1]}}&lat2={{coord[1][0]}}&long2={{coord[1][1]}}"> 20km </a>
             <a href = "/comparaison/30/?lat={{coord[0][0]}}&long={{coord[0][1]}}&lat2={{coord[1][0]}}&long2={{coord[1][1]}}"> 30km </a>
             <a href = "/comparaison/40/?lat={{coord[0][0]}}&long={{coord[0][1]}}&lat2={{coord[1][0]}}&long2={{coord[1][1]}}"> 40km </a>
             <a href = "/comparaison/50/?lat={{coord[0][0]}}&long={{coord[0][1]}}&lat2={{coord[1][0]}}&long2={{coord[1][1]}}"> 50km </a>
+            {% endif %}  
             
         </div>
 
