@@ -201,7 +201,7 @@
                         {% if 'intensity' in e %}
                         <tr>
                             <td>Intensity</td>
-                            <td>{{e["intensity"]["description"]}}</td>
+                            <td>[{{e["intensity"]["id"]}}] {{e["intensity"]["description"]}}</td>
                         </tr>
                         {% endif %}
                         {% if 'deaths' in e %}
@@ -229,6 +229,16 @@
                             </tr>
                         {% endif %}
                     </table>
+                        {% if 'comments' in e %}
+                        <table>
+                            <tr>
+                                <td style="background-color: rgba(0, 92, 179, 0.4);">Comments</td>
+                            </tr>
+                            <tr>
+                                <td style="background-color: rgba(100, 100, 100, 0.25); font-size: 16px;">{{e["comments"]}}</td>
+                            </tr>
+                        </table>
+                        {% endif %}
                 </div>
                 {% endfor %}
 
@@ -258,7 +268,7 @@
                         </tr>
                         {% if 'cause' in e %}
                         <tr>
-                            <td>Intensity</td>
+                            <td>Cause</td>
                             <td>{{e["cause"]}}</td>
                         </tr>
                         {% endif %}
@@ -285,6 +295,16 @@
                                 <td>Houses damaged (min)</td>
                                 <td>{{e["housesDamaged"]}}</td>
                             </tr>
+                        {% endif %}
+                        {% if 'comments' in e %}
+                        <table>
+                            <tr>
+                                <td style="background-color: rgba(0, 92, 179, 0.4);">Comments</td>
+                            </tr>
+                            <tr>
+                                <td style="background-color: rgba(100, 100, 100, 0.25); font-size: 16px;">{{e["comments"]}}</td>
+                            </tr>
+                        </table>
                         {% endif %}
                     </table>
                 </div>
