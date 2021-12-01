@@ -21,7 +21,7 @@ def compute_distance(coord1, coord2):
     -------
     - distance (float) : distance in KM between the two coordinates
     """
-    return dist.distance(coord1, coord2).km
+    return round(dist.distance(coord1, coord2).km,4)
 
 def compute_bearing(coord1, coord2):
     """ Computes a bearing between two coordinates
@@ -163,6 +163,10 @@ def get_events_in_radius(coord,radius):
                 vlocation["bearing"] = compute_bearing(coord,vl_coord)
                 vlocation["proj"] = point_pos(0,0,vl_distance,vlocation["bearing"])
                 vlocation["erruptions"] = []
+                vlocation["deaths"] = 0
+                vlocation["damages"] = 0
+                vlocation["injuries"] = 0
+                vlocation["housesDamaged"] = 0
 
                 events["volcanos"].append(vlocation)
 
@@ -195,6 +199,11 @@ def get_events_in_radius(coord,radius):
                         vevent["damages"] = mil_mins[erruption["damageAmountOrder"]]
 
                 events["volcanos"][i]["erruptions"].append(vevent)
+
+                # Add in the sums of deaths and damages for a volcano
+                for key in ["deaths","damages","injuries","housesDamaged"]:
+                    if key in vevent:
+                        events["volcanos"][i][key] += vevent[key]
 
     # Finally, returns all the events            
     return events

@@ -17,12 +17,12 @@
     float: left;
     width: 50%;
     padding: 10px;
-    height: 100vh;
+    height: 100%;
   }
   .details {
     float: left;
     width: 25%;
     padding: 10px;
-    height: 100vh;
+    height: 100%;
     background-color:#eee;
   }

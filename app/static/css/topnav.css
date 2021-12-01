@@ -24,3 +24,20 @@ html, body {
   background-color: #003366;
   color: white;
 }
+
+table {
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+  font-size: 16px;
+}
+
+.feature {
+  background-color: rgba(0, 92, 179, 0.4);
+}
+.value {
+  background-color: rgba(100, 100, 100, 0.25);
+}
