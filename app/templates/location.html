@@ -26,33 +26,50 @@
         <div class="summary">
            <h3>Summary</h3>
 
-            <p>Volcanos: {{summary[0]}} <br />
-                Earthquakes: {{summary[1]}} <br />
-                Tsunamis: {{summary[2]}}</p>
-            <!-- dispaly the damage only if define -->
-            {% if info is defined and info|length %}
-                <table>
-                    <tr>
-                        <th>Damage</th>
-                        <th>Damage </th>
-                    </tr>
-                    {% for damage, number in info.items() %}
-                        {% if damage == "damages" %}
-                            <tr>
-                                <td>{{ damage }}</td>
-                                <td>{{ number }} M $</td>
-                           </tr>
-                        {% else %}
-
-                            <tr>
-                                <td>{{ damage }}</td>
-                                <td>{{ number }}</td>
-                            </tr>
-                        {% endif %}
-
-                    {% endfor %}
-                </table>
-            {% endif %}
+           <table>
+                <tr>
+                    <td>Earthquakes</td>
+                    <td>{{summary[1]}}</td>
+                </tr>
+                <tr>
+                    <td>Tsunamis</td>
+                    <td>{{summary[2]}}</td>
+                </tr>
+                <tr>
+                    <td>Volcanos</td>
+                    <td>{{summary[0]}}</td>
+                </tr>
+                <tr>
+                    <td>Erruptions</td>
+                    <td>{{summary[3]}}</td>
+                </tr>
+           </table>
+           <table>
+                {% if 'deaths' in info %}
+                <tr>
+                    <td>Deaths (min)</td>
+                    <td>{{info['deaths']}}</td>
+                </tr>
+                {% endif %}
+                {% if 'damages' in info %}
+                <tr>
+                    <td>Damages (min)</td>
+                    <td>{{info['damages']}}M $</td>
+                </tr>
+                {% endif %}
+                {% if 'injuries' in info %}
+                <tr>
+                    <td>Injuries (min)</td>
+                    <td>{{info['injuries']}}</td>
+                </tr>
+                {% endif %}
+                {% if 'housesDamaged' in info %}
+                <tr>
+                    <td>Houses damaged (min)</td>
+                    <td>{{info['housesDamaged']}}</td>
+                </tr>
+                {% endif %}            
+            </table>
         </div>
 
         <div class="visu" style="text-align:center">
@@ -157,31 +174,54 @@
                 {% for e in events["earthquakes"] %}
                 <div id="e{{loop.index}}" style="display:none">
                     <h3>Details of the earthquake</h3>
-                    <ul>
-                        <li>Location: {{e["locationName"]}}</li>
-                        <li>Date: {{e["year"]}}-{{e["month"]}}-{{e["day"]}}</li>
-                        <li>Distance: {{e['distance']}}km</li> 
-                        <li>Coordinates: [{{e["latitude"]}};{{e["longitude"]}}]</li>
+                    <table>
+                        <tr>
+                            <td>Location</td>
+                            <td>{{e["locationName"]}}</td>
+                        </tr>
+                        <tr>
+                            <td>Date</td>
+                            <td>{{e["year"]}}/{{e["month"]}}/{{e["day"]}}</td>
+                        </tr>
+                        <tr>
+                            <td>Distance</td>
+                            <td>{{e['distance']}}km</td>
+                        </tr>
+                        <tr>
+                            <td>Coordinates</td>
+                            <td>[ {{e["latitude"]}} ; {{e["longitude"]}} ]</td>
+                        </tr>
                         {% if 'intensity' in e %}
-                            <li>Intensity: {{e["intensity"]["description"]}}</li>
+                        <tr>
+                            <td>Intensity</td>
+                            <td>{{e["intensity"]["description"]}}</td>
+                        </tr>
                         {% endif %}
                         {% if 'deaths' in e %}
-                            <li>Deaths (min): {{e["deaths"]}}</li>
+                        <tr>
+                            <td>Deaths (min)</td>
+                            <td>{{e["deaths"]}}</td>
+                        </tr>
                         {% endif %}
                         {% if 'damages' in e %}
-                            <li>Damages (min): {{e["damages"]}} M $</li>
+                        <tr>
+                            <td>Damages (min)</td>
+                            <td>{{e["damages"]}}M $</td>
+                        </tr>
                         {% endif %}
                         {% if 'injuries' in e %}
-                            <li>Injuries (min): {{e["injuries"]}}</li>
+                        <tr>
+                            <td>Injuries (min)</td>
+                            <td>{{e["injuries"]}}</td>
+                        </tr>
                         {% endif %}
                         {% if 'housesDamaged' in e %}
-                            <li>Houses damaged (min): {{e["housesDamaged"]}}</li>
+                            <tr>
+                                <td>Houses damaged (min)</td>
+                                <td>{{e["housesDamaged"]}}</td>
+                            </tr>
                         {% endif %}
-
-                        {% for attribut, value in events["earthquakes"][loop.index-1].items() %}
-                        <li>{{ attribut }} : {{ value }}</li>
-                    {% endfor %}
-                    </ul>
+                    </table>
                 </div>
                 {% endfor %}
 

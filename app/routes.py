@@ -2,7 +2,7 @@ from app import app
 from flask import render_template, redirect
 from flask import url_for, request
 
-from app.datasets.datasets_methods import get_events_in_radius, get_timeline_events
+from app.datasets.datasets_methods import get_events_in_radius, get_timeline_events, get_amount_erruptions
 
 ##########
 # ROUTES #
@@ -28,6 +28,7 @@ def location(scale):
         nb_earthquakes = len(events["earthquakes"])
         nb_volcanos = len(events["volcanos"])
         nb_tsunamis = len(events["tsunamis"])
+        nb_erruptions = get_amount_erruptions(events)
 
         #info contains the sum of the damage("damageMillionsDollars", "deaths", "damageAmountOrder",
         # "deathsAmountOrder", "deathsAmountOrder", "housesDestroyedAmountOrder")
@@ -45,7 +46,7 @@ def location(scale):
         # Get the infos for the timeline
         timeline = get_timeline_events(events)
 
-        return render_template("location.html", summary=[nb_volcanos, nb_earthquakes, nb_tsunamis], events=events, info=info, coord=coord, scale=scale, semi_scale=int(scale/2),timeline=timeline)
+        return render_template("location.html", summary=[nb_volcanos, nb_earthquakes, nb_tsunamis, nb_erruptions], events=events, info=info, coord=coord, scale=scale, semi_scale=int(scale/2),timeline=timeline)
 
     return redirect(url_for("index"))
 

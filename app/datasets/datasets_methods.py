@@ -265,3 +265,20 @@ def get_timeline_events(events):
                     timeline[int(e["year"])] = [id]
 
     return timeline
+
+def get_amount_erruptions(events):
+    """ Gets the total amount of erruptions
+
+    Parameters
+    ----------
+    - events (dict) : all the event that appened in the radius 
+
+    Returns
+    -------
+    - amount (int) : total amount of erruptions
+    """
+    amount = 0
+    for i in range(len(events["volcanos"])):
+        amount += len(events["volcanos"][i]["erruptions"])
+
+    return amount
