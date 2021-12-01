@@ -136,13 +136,13 @@
                             <line x1="{{(year-1800)*2.5+10}}" y1="110" x2="{{(year-1800)*2.5+10}}" y2="90" stroke="#555" stroke-width="3"/>
                             {% for elem in list %}     
                                 {% if elem[0] == "e" %}
-                            <image href="/static/img/icon_earthquake.png" x={{(year-1800)*2.5}} y=65 height="20" width="20" id={{elem}}></image>
+                            <image href="/static/img/icon_earthquake.png" x={{(year-1800)*2.5}} y=65 height="20" width="20" id=tm{{elem[0]}}{{elem[1]}}></image>
                                 {% endif %}
                                 {% if elem[0] == "t" %}
-                            <text style="font-size: 20px" x={{(year-1800)*2.5}} y=58 id={{elem}}>🌊</text>
+                            <text style="font-size: 20px" x={{(year-1800)*2.5}} y=58 id=tm{{elem[0]}}{{elem[1]}}>🌊</text>
                                 {% endif %}
                                 {% if elem[0] == "v" %}
-                            <text style="font-size: 20px" x={{(year-1800)*2.5}} y=140 id={{elem}}>🌋</text>
+                            <text style="font-size: 20px" x={{(year-1800)*2.5}} y=140 id=tm{{elem[0]}}{{elem[1]}}>🌋</text>
                                 {% endif %}
                             {% endfor %}
                         {% endif %}
@@ -152,13 +152,33 @@
         </div>
 
         <div class="details">
-            <h3>Details</h3>
             <div id="details">
 
                 {% for e in events["earthquakes"] %}
                 <div id="e{{loop.index}}" style="display:none">
+                    <h3>Details of the earthquake</h3>
                     <ul>
-                    {% for attribut, value in events["earthquakes"][loop.index-1].items() %}
+                        <li>Location: {{e["locationName"]}}</li>
+                        <li>Date: {{e["year"]}}-{{e["month"]}}-{{e["day"]}}</li>
+                        <li>Distance: {{e['distance']}}km</li> 
+                        <li>Coordinates: [{{e["latitude"]}};{{e["longitude"]}}]</li>
+                        {% if 'intensity' in e %}
+                            <li>Intensity: {{e["intensity"]["description"]}}</li>
+                        {% endif %}
+                        {% if 'deaths' in e %}
+                            <li>Deaths (min): {{e["deaths"]}}</li>
+                        {% endif %}
+                        {% if 'damages' in e %}
+                            <li>Damages (min): {{e["damages"]}} M $</li>
+                        {% endif %}
+                        {% if 'injuries' in e %}
+                            <li>Injuries (min): {{e["injuries"]}}</li>
+                        {% endif %}
+                        {% if 'housesDamaged' in e %}
+                            <li>Houses damaged (min): {{e["housesDamaged"]}}</li>
+                        {% endif %}
+
+                        {% for attribut, value in events["earthquakes"][loop.index-1].items() %}
                         <li>{{ attribut }} : {{ value }}</li>
                     {% endfor %}
                     </ul>
@@ -167,6 +187,7 @@
 
                 {% for e in events["tsunamis"] %}
                 <div id="t{{loop.index}}" style="display:none">
+                    <h3>Details of the tsunami</h3>
                     <ul>
                     {% for attribut, value in events["tsunamis"][loop.index-1].items() %}
                         <li>{{ attribut }} : {{ value }}</li>
@@ -177,6 +198,7 @@
 
                 {% for e in events["volcanos"] %}
                 <div id="v{{loop.index}}" style="display:none">
+                    <h3>Details of the volcano</h3>
                     <ul>
                     {% for attribut, value in events["volcanos"][loop.index-1].items() %}
                         <li>{{ attribut }} : {{ value }}</li>
@@ -186,51 +208,6 @@
                 {% endfor %}
             </div>
         </div>
-
-            <div class="detail">
-
-        {% set value_id = 0 %}
-            {% if events is defined and events|length > 3 %}
-                <!--check is the event is a earthquakes -->
-                {% set name_event = "earthquakes"  %}
-                {% if name_event in events %}
-                    {% for i in events[name_event] %}
-                        {% if value_id in events["earthquakes"][i].values() %}
-                            {% for attribut, value in events["earthquakes"][i].items() %}
-                                 {{ attribut }} : {{ value }}
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-
-                <!--check is the event is a volcanos -->
-                {% set name_event = "volcanos" %}
-                {% if name_event in events %}
-                    {% for i in events[name_event] %}
-                        {% if value_id in events[name_event][i].values() %}
-                            {% for attribut, value in events[name_event][i].items() %}
-                                 {{ attribut }} : {{ value }}
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-
-                <!--check is the event is a volcanos -->
-                {% set name_event = "tsunamis" %}
-                {% if name_event in events %}
-                    {% for i in events[name_event] %}
-                        {% if value_id in events[name_event][i].values() %}
-                            {% for attribut, value in events[name_event][i].items() %}
-                                 {{ attribut }} : {{ value }}
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-
-            {% endif %}
-
-        </div>
-
 
 
         <script type="text/javascript" src="/static/js/details.js"></script>
