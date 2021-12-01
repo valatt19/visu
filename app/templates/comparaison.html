@@ -12,13 +12,29 @@
             <div class="search">
                 <form action="/comparaison/" method="GET">
                     <label for="lat">[1] Latitude: </label>
+
+                    {% if nb_places > 0 %}
+                    <input type="number" step="0.0001" id="lat" name="lat" value="{{coord[0][0]}}">
+                    <label for="long">[1] Longitude: </label>
+                    <input type="number" step="0.0001" id="long" name="long" value="{{coord[0][1]}}">
+                    {% else %}
                     <input type="number" step="0.0001" id="lat" name="lat">
                     <label for="long">[1] Longitude: </label>
                     <input type="number" step="0.0001" id="long" name="long">
+                    {% endif %}
+
                     <label for="lat2">[2] Latitude: </label>
+
+                    {% if nb_places > 1 %}
+                    <input type="number" step="0.0001" id="lat2" name="lat2" value="{{coord[1][0]}}">
+                    <label for="long2">[2] Longitude: </label>
+                    <input type="number" step="0.0001" id="long2" name="long2" value="{{coord[1][1]}}">
+                    {% else %}
                     <input type="number" step="0.0001" id="lat2" name="lat2">
                     <label for="long2">[2] Longitude: </label>
                     <input type="number" step="0.0001" id="long2" name="long2">
+                    {% endif %}
+
                     <input type="submit" value="Search">
                 </form>
             </div>
@@ -28,7 +44,7 @@
             {% if nb_places > 0 %}
             <h1>[ {{coord[0][0]}} ; {{coord[0][1]}} ]</h1>
             <div class="circles" style="text-align:center;">
-                <svg width = "600" height = "600" style="border:2px solid black">
+                <svg width = "600" height = "720" style="border:4px solid black; background-color:white">
                     <g>
                         <image href="/static/img/nord.png" x=500 y=60 height="35" width="35" />
                     </g>
@@ -67,6 +83,46 @@
                         <text style="font-size: 25px" x={{290+e["proj"][0]*250/scale}} y={{310+e["proj"][1]*250/scale}} >🌋</text>
                     </g>
                     {% endfor %}
+
+                    <line x1="0" y1="575" x2="600" y2="575" stroke="#000" stroke-width="4"/>
+
+                    <defs>
+                        <marker id="arrowhead" markerWidth="5" markerHeight="4" refX="0" refY="2" orient="auto">
+                          <polygon points="0 0, 5 2, 0 4" />
+                        </marker>
+                      </defs>
+                      <line x1="0" y1="650" x2="570" y2="650" stroke="#000" stroke-width="5" marker-end="url(#arrowhead)" />
+
+                      <line x1="10" y1="660" x2="10" y2="640" stroke="#000" stroke-width="2"/>
+                      <text style="font-size: 12px" x=0 y=672>1800</text>
+                      <line x1="260" y1="660" x2="260" y2="640" stroke="#000" stroke-width="2"/>
+                      <text style="font-size: 12px" x=250 y=672>1900</text>
+                      <line x1="510" y1="660" x2="510" y2="640" stroke="#000" stroke-width="2"/>
+                      <text style="font-size: 12px" x=500 y=672>2000</text>
+
+                      {% for i in [1,2,3,4,5,7,6,8,9] %}
+                        <line x1="{{10+i*25}}" y1="655" x2="{{10+i*25}}" y2="645" stroke="#000" stroke-width="1"/>
+                        <line x1="{{260+i*25}}" y1="655" x2="{{260+i*25}}" y2="645" stroke="#000" stroke-width="1"/>
+                      {% endfor %}         
+                      <line x1="535" y1="655" x2="535" y2="645" stroke="#000" stroke-width="1"/>
+                      <line x1="560" y1="655" x2="560" y2="645" stroke="#000" stroke-width="1"/>       
+                      
+                      {% for year,list in timeline[0].items() %}
+                        {% if year >= 1800 %}
+                            <line x1="{{(year-1800)*2.5+10}}" y1="660" x2="{{(year-1800)*2.5+10}}" y2="640" stroke="#555" stroke-width="3"/>
+                            {% for elem in list %}     
+                                {% if elem[0] == "e" %}
+                            <image href="/static/img/icon_earthquake.png" x={{(year-1800)*2.5}} y=615 height="20" width="20" id=tm{{elem[0]}}{{elem[1]}}></image>
+                                {% endif %}
+                                {% if elem[0] == "t" %}
+                            <text style="font-size: 20px" x={{(year-1800)*2.5}} y=608 id=tm{{elem[0]}}{{elem[1]}}>🌊</text>
+                                {% endif %}
+                                {% if elem[0] == "v" %}
+                            <text style="font-size: 20px" x={{(year-1800)*2.5}} y=690 id=tm{{elem[0]}}{{elem[1]}}>🌋</text>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                      {% endfor %}
                  </svg>
 
             </div>
@@ -74,6 +130,7 @@
         </div>
 
         <div class="summary">
+            <h1>Comparaison</h1>
             <h3>Volcanos</h3>
             <table style="text-align: center;">
                 <tr>
@@ -84,7 +141,22 @@
                     </td>
                     <td>
                     {% if nb_places > 1 %}
+                        {{summary[4]}}
+                    {% endif %}    
+                    </td>
+                </tr>
+            </table>
+            <h3>Erruptions</h3>
+            <table style="text-align: center;">
+                <tr>
+                    <td>
+                    {% if nb_places > 0 %}
                         {{summary[3]}}
+                    {% endif %}
+                    </td>
+                    <td>
+                    {% if nb_places > 1 %}
+                        {{summary[7]}}
                     {% endif %}    
                     </td>
                 </tr>
@@ -99,7 +171,7 @@
                     </td>
                     <td>
                     {% if nb_places > 1 %}
-                        {{summary[4]}}
+                        {{summary[5]}}
                     {% endif %}    
                     </td>
                 </tr>
@@ -114,13 +186,14 @@
                     </td>
                     <td>
                     {% if nb_places > 1 %}
-                        {{summary[5]}}
+                        {{summary[6]}}
                     {% endif %}    
                     </td>
                 </tr>
             </table>
+
             {% if nb_places > 1 %}
-            <h3>Radius</h3>
+            <h1>Radius</h1>
             <div class="radius">
                 <a href = "/comparaison/10/?lat={{coord[0][0]}}&long={{coord[0][1]}}&lat2={{coord[1][0]}}&long2={{coord[1][1]}}"> 10km </a>
                 <a href = "/comparaison/20/?lat={{coord[0][0]}}&long={{coord[0][1]}}&lat2={{coord[1][0]}}&long2={{coord[1][1]}}"> 20km </a>
@@ -136,7 +209,7 @@
             {% if nb_places > 1 %}
             <h1>[ {{coord[1][0]}} ; {{coord[1][1]}} ]</h1>
             <div class="circles" style="text-align:center;">
-                <svg width = "600" height = "600" style="border:2px solid black">
+                <svg width = "600" height = "720" style="border:4px solid black; background-color:white">
                     <g>
                         <image href="/static/img/nord.png" x=500 y=60 height="35" width="35" />
                     </g>
@@ -175,6 +248,46 @@
                         <text style="font-size: 25px" x={{290+e["proj"][0]*250/scale}} y={{310+e["proj"][1]*250/scale}} >🌋</text>
                     </g>
                     {% endfor %}
+
+                    <line x1="0" y1="575" x2="600" y2="575" stroke="#000" stroke-width="4"/>
+
+                    <defs>
+                        <marker id="arrowhead" markerWidth="5" markerHeight="4" refX="0" refY="2" orient="auto">
+                          <polygon points="0 0, 5 2, 0 4" />
+                        </marker>
+                      </defs>
+                      <line x1="0" y1="650" x2="570" y2="650" stroke="#000" stroke-width="5" marker-end="url(#arrowhead)" />
+
+                      <line x1="10" y1="660" x2="10" y2="640" stroke="#000" stroke-width="2"/>
+                      <text style="font-size: 12px" x=0 y=672>1800</text>
+                      <line x1="260" y1="660" x2="260" y2="640" stroke="#000" stroke-width="2"/>
+                      <text style="font-size: 12px" x=250 y=672>1900</text>
+                      <line x1="510" y1="660" x2="510" y2="640" stroke="#000" stroke-width="2"/>
+                      <text style="font-size: 12px" x=500 y=672>2000</text>
+
+                      {% for i in [1,2,3,4,5,7,6,8,9] %}
+                        <line x1="{{10+i*25}}" y1="655" x2="{{10+i*25}}" y2="645" stroke="#000" stroke-width="1"/>
+                        <line x1="{{260+i*25}}" y1="655" x2="{{260+i*25}}" y2="645" stroke="#000" stroke-width="1"/>
+                      {% endfor %}         
+                      <line x1="535" y1="655" x2="535" y2="645" stroke="#000" stroke-width="1"/>
+                      <line x1="560" y1="655" x2="560" y2="645" stroke="#000" stroke-width="1"/>       
+                      
+                      {% for year,list in timeline[1].items() %}
+                        {% if year >= 1800 %}
+                            <line x1="{{(year-1800)*2.5+10}}" y1="660" x2="{{(year-1800)*2.5+10}}" y2="640" stroke="#555" stroke-width="3"/>
+                            {% for elem in list %}     
+                                {% if elem[0] == "e" %}
+                            <image href="/static/img/icon_earthquake.png" x={{(year-1800)*2.5}} y=615 height="20" width="20" id=tm{{elem[0]}}{{elem[1]}}></image>
+                                {% endif %}
+                                {% if elem[0] == "t" %}
+                            <text style="font-size: 20px" x={{(year-1800)*2.5}} y=608 id=tm{{elem[0]}}{{elem[1]}}>🌊</text>
+                                {% endif %}
+                                {% if elem[0] == "v" %}
+                            <text style="font-size: 20px" x={{(year-1800)*2.5}} y=690 id=tm{{elem[0]}}{{elem[1]}}>🌋</text>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                      {% endfor %}
                  </svg>
             </div>
             {% endif %}
