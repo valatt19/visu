@@ -1,5 +1,6 @@
 import geopy.distance as dist
 import json 
+import copy
 
 from geographiclib.geodesic import Geodesic
 
@@ -162,7 +163,7 @@ def get_events_in_radius(coord,radius):
                 vlocation["distance"] = vl_distance
                 vlocation["bearing"] = compute_bearing(coord,vl_coord)
                 vlocation["proj"] = point_pos(0,0,vl_distance,vlocation["bearing"])
-                vlocation["erruptions"] = []
+                vlocation["errupt"] = []
                 vlocation["deaths"] = 0
                 vlocation["damages"] = 0
                 vlocation["injuries"] = 0
@@ -198,12 +199,18 @@ def get_events_in_radius(coord,radius):
                         # mil_maxs = [0,50,100,1000,1001]
                         vevent["damages"] = mil_mins[erruption["damageAmountOrder"]]
 
-                events["volcanos"][i]["erruptions"].append(vevent)
+                events["volcanos"][i]["errupt"].append(vevent)
 
                 # Add in the sums of deaths and damages for a volcano
                 for key in ["deaths","damages","injuries","housesDamaged"]:
                     if key in vevent:
                         events["volcanos"][i][key] += vevent[key]
+    
+    # Sorts the erruptions of a volcano
+    for vol in events["volcanos"]:
+        sorted_erruptions = sorted(vol["errupt"], key=lambda d: d["year"],reverse=True)
+        vol["erruptions"] = sorted_erruptions
+
 
     # Finally, returns all the events            
     return events
