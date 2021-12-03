@@ -8,23 +8,23 @@
 
   .summary {
     float: left;
-    width: 25%;
+    width: 30%;
     padding: 10px;
-    height: 100vh;
+    height: calc(100vh - 56px);
     background-color:#eee;
   }
   .visu {
     float: left;
-    width: 50%;
+    width: 40%;
     padding: 10px;
-    height: 100%;
+    height: calc(100vh - 56px);
     background-color:rgba(150, 150, 150, 0.25)
   }
   .details {
     float: left;
-    width: 25%;
+    width: 30%;
     padding: 10px;
-    height: 100%;
+    height: calc(100vh - 56px);
     background-color:#eee;
   }
 

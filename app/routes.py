@@ -75,7 +75,7 @@ def comparaison(scale):
             nb_earthquakes2 = len(events2["earthquakes"])
             nb_volcanos2 = len(events2["volcanos"])
             nb_tsunamis2 = len(events2["tsunamis"])
-            nb_erruptions2 = get_amount_erruptions(events)
+            nb_erruptions2 = get_amount_erruptions(events2)
 
             # Get the infos for the timeline
             tl2 = get_timeline_events(events2)

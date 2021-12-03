@@ -14,7 +14,7 @@
         <title>Disasters comparaison</title>
     </head>
     <body>
-
+        <!--
         <div class="topnav">
             <a href="/">Home</a>
             <div class="search">
@@ -47,7 +47,7 @@
                 </form>
             </div>
         </div>
-    <!--
+    -->
     <nav  class="navbar navbar-expand-sm bg-dark navbar-dark col">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Event</a>
@@ -57,35 +57,31 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a {% block compare %}class="nav-link" href="/comparaison/"{% endblock %}>Compare</a>
-                    </li>
                 </ul>
 
                 <form {% block action %} class="d-flex" action="/comparaison/" method="GET" {% endblock %}>
                  {% if nb_places > 0 %}
-                    <input class="form-control me-2" type="number" id="lat" step="0.0001" name="lat" placeholder={{coord[0][0]}}>
-                    <input class="form-control me-2" type="number" id="long" step="0.0001" name="long" placeholder={{coord[0][1]}}>
+                    <input class="form-control me-2" type="number" id="lat" step="0.0001" name="lat" value={{coord[0][0]}}>
+                    <input class="form-control me-2" type="number" id="long" step="0.0001" name="long" value={{coord[0][1]}}>
                  {% else %}
-                    <input class="form-control me-2" type="number" id="lat" step="0.0001" name="lat" placeholder="Latitude">
-                    <input class="form-control me-2" type="number" id="long" step="0.0001" name="long" placeholder="Longitude">
+                    <input class="form-control me-2" type="number" id="lat" step="0.0001" name="lat" placeholder="1st Latitude">
+                    <input class="form-control me-2" type="number" id="long" step="0.0001" name="long" placeholder="1st Longitude">
                  {% endif %}
-
-                {% if nb_places > 1 %}
-                    <input class="form-control me-2" type="number" id="lat2" step="0.0001" name="lat2" placeholder={{coord[1][0]}}>
-                    <input class="form-control me-2" type="number" id="long2" step="0.0001" name="long2" placeholder={{coord[1][1]}}>
-                 {% else %}
-                    <input class="form-control me-2" type="number" id="lat2" step="0.0001" name="lat2" placeholder="Latitude">
-                    <input class="form-control me-2" type="number" id="long2" step="0.0001" name="long2" placeholder="Longitude">
-                 {% endif %}
-
                     <button class="btn btn-primary" value="Search" type="submit">Search</button>
+                {% if nb_places > 1 %}
+                    <input class="form-control me-2" type="number" id="lat2" step="0.0001" name="lat2" value={{coord[1][0]}}>
+                    <input class="form-control me-2" type="number" id="long2" step="0.0001" name="long2" value={{coord[1][1]}}>
+                 {% else %}
+                    <input class="form-control me-2" type="number" id="lat2" step="0.0001" name="lat2" placeholder="2nd Latitude">
+                    <input class="form-control me-2" type="number" id="long2" step="0.0001" name="long2" placeholder="2nd Longitude">
+                 {% endif %}
+
                 </form>
 
             </div>
         </div>
     </nav>
--->
+
         <div class="place">
             {% if nb_places > 0 %}
             <h1>[ {{coord[0][0]}} ; {{coord[0][1]}} ]</h1>

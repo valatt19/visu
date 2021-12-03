@@ -15,14 +15,14 @@
     float: left;
     width: 20%;
     padding: 10px;
-    height: 100vh;
+    height: calc(100vh - 56px);
     background-color:#eee;
   }
   .place {
     float: left;
     width: 40%;
     padding: 10px;
-    height: 100vh;
+    height: calc(100vh - 56px);
     background-color:rgba(150, 150, 150, 0.25);
   }
 
