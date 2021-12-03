@@ -18,47 +18,35 @@
         <script src='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'></script>
         <link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' />
         <script src="https://unpkg.com/@esri/arcgis-rest-request@3.0.0/dist/umd/request.umd.js"></script>
-    <script src="https://unpkg.com/@esri/arcgis-rest-geocoding@3.0.0/dist/umd/geocoding.umd.js"></script>
-    <script src="https://unpkg.com/@esri/arcgis-rest-auth@3.0.0/dist/umd/auth.umd.js"></script>
+        <script src="https://unpkg.com/@esri/arcgis-rest-geocoding@3.0.0/dist/umd/geocoding.umd.js"></script>
+        <script src="https://unpkg.com/@esri/arcgis-rest-auth@3.0.0/dist/umd/auth.umd.js"></script>
     </head>
+
     <body>
-    <!--
-        <div class="topnav">
-            <a href="/">Home</a>
-            <div class="search">
-                <form action="/location/" method="GET">
-                    <label for="lat">Latitude: </label>
-                    <input type="number" step="0.0001" id="lat" name="lat">
-                    <label for="long">Longitude: </label>
-                    <input type="number" step="0.0001" id="long" name="long">
-                    <input type="submit" value="Search">
-                </form>
+
+        <nav  class="navbar navbar-expand-sm bg-dark navbar-dark col">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Event</a>
+                <div class="collapse navbar-collapse">
+
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a {% block compare %}class="nav-link" href="/comparaison/"{% endblock %}>Compare</a>
+                        </li>
+                    </ul>
+
+                    <form {% block action %} class="d-flex" action="/location/" method="GET" {% endblock %}>
+                        <input class="form-control me-2" type="number" id="lat" step="0.0001" name="lat" placeholder={% block value %}"Latitude"{% endblock %}>
+                        <input class="form-control me-2" type="number" id="long" step="0.0001" name="long" placeholder={% block value1 %}"Longitude"{% endblock %}>
+                        <button class="btn btn-primary" value="Search" type="submit">Search</button>
+                    </form>
+
+                </div>
             </div>
-            <a href="/comparaison/">Comparaison</a>
-        </div> -->
-    <nav  class="navbar navbar-expand-sm bg-dark navbar-dark col">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Event</a>
-            <div class="collapse navbar-collapse">
-
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a {% block compare %}class="nav-link" href="/comparaison/"{% endblock %}>Compare</a>
-                    </li>
-                </ul>
-
-                <form {% block action %} class="d-flex" action="/location/" method="GET" {% endblock %}>
-                    <input class="form-control me-2" type="number" id="lat" step="0.0001" name="lat" placeholder={% block value %}"Latitude"{% endblock %}>
-                    <input class="form-control me-2" type="number" id="long" step="0.0001" name="long" placeholder={% block value1 %}"Longitude"{% endblock %}>
-                    <button class="btn btn-primary" value="Search" type="submit">Search</button>
-                </form>
-
-            </div>
-        </div>
-    </nav>
+        </nav>
 
         <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
         <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
