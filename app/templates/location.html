@@ -133,7 +133,7 @@
 
                     {% for e in events["volcanos"] %}
                     <g class="pointer">
-                        <text style="font-size: 25px" x={{290+e["proj"][0]*250/scale}} y={{310+e["proj"][1]*250/scale}} onclick="showDetails('v','{{ loop.index }}')">🌋</text>
+                        <text style="font-size: 25px" x={{290+e["proj"][0]*250/scale}} y={{310+e["proj"][1]*250/scale}} onclick="showDetails('v','{{ loop.index }}'); showSlides(1,'{{loop.index}}');">🌋</text>
                     </g>
                     {% endfor %}
                     
@@ -379,11 +379,11 @@
                             </tr>
                         {% endif %}
                     </table>
-
+                    {% with eid=loop.index %}  
                     <h3 style="text-align:center">Erruptions ({{e["erruptions"]|length}})</h3>
                     <div class="slideshow-container">
                     {% for event in e["erruptions"] %}
-                    <div class="mySlides">
+                    <div class="mySlides{{eid}}">
                     <table>
                         <colgroup>
                             <col class="feature"/>
@@ -429,9 +429,10 @@
                             </table>
                         {% endif %}
                     </div>
-                    {% endfor %}
-                    <a class="prev" onclick="plusSlides(1)">&#10094;</a>
-                    <a class="next" onclick="plusSlides(-1)">&#10095;</a>
+                    {% endfor %} 
+                        <a class="prev" onclick="plusSlides(1,'{{eid}}')">&#10094;</a>
+                        <a class="next" onclick="plusSlides(-1,'{{eid}}')">&#10095;</a>
+                    {% endwith %}
                 </div>
                 </div>
                 {% endfor %}
