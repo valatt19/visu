@@ -222,6 +222,18 @@
                             <td>[{{e["intensity"]["id"]}}] {{e["intensity"]["description"]}}</td>
                         </tr>
                         {% endif %}
+                        {% if 'eqMagnitude' in e %}
+                        <tr>
+                            <td>Magnitude</td>
+                            <td>{{e["eqMagnitude"]}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if 'eqDepth' in e %}
+                        <tr>
+                            <td>Depth</td>
+                            <td>{{e["eqDepth"]}} km</td>
+                        </tr>
+                        {% endif %}
                         {% if 'deaths' in e %}
                         <tr>
                             <td>Deaths (min)</td>
@@ -288,6 +300,12 @@
                         <tr>
                             <td>Cause</td>
                             <td>{{e["cause"]}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if 'maxWaterHeight' in e %}
+                        <tr>
+                            <td>Water Height (max)</td>
+                            <td>{{e["maxWaterHeight"]}} m</td>
                         </tr>
                         {% endif %}
                         {% if 'deaths' in e %}
