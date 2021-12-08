@@ -97,6 +97,7 @@
             <h1>Location: [ {{coord[0]}} ; {{coord[1]}} ]</h1>
             <div class="circles" style="text-align:center;">
                 <svg width = "600" height = "720" style="border:4px solid black; background-color:white">
+                    <!-- SVG part for the circle map -->
                     <g>
                         <image href="/static/img/nord.png" x=500 y=60 height="35" width="35" />
                     </g>
@@ -116,36 +117,48 @@
                         <circle style="fill: #ff0000" stroke="black" cx=300 cy=300 r=5></circle>
                     </g>
 
-
+                    <!-- Show each earthquake on the cercle -->
                     {% for e in events["earthquakes"] %}
                     <g class="pointer">
+                        <!-- Center of the cercle is at (300,300)
+                             The values are slightly different because of the size of the icons
+                             The radius of the cercle is 250
+
+                             The projection coordinates are not put at scale before 
+                             so if we have an event 50 km on the right of the center, the projection value of x is 50
+                             If the radius selected is 50, the x value must be 250 = 50*5 = 50*(250/radius)
+                             In the code the radius is called scale
+                        -->
                         <image href="/static/img/icon_earthquake.png" x={{288+e["proj"][0]*250/scale}} y={{288+e["proj"][1]*250/scale}} height="25" width="25" onclick="showDetails('e','{{ loop.index }}')"/>
                     </g>
                     {% endfor %}
 
-
+                    <!-- Show each tsunami on the cercle -->
                     {% for e in events["tsunamis"] %}
                     <g class="pointer">
                         <text style="font-size: 25px" x={{290+e["proj"][0]*250/scale}} y={{310+e["proj"][1]*250/scale}} onclick="showDetails('t','{{ loop.index }}')">🌊</text>
                     </g>
                     {% endfor %}
 
-
+                    <!-- Show each volcano on the cercle -->
                     {% for e in events["volcanos"] %}
                     <g class="pointer">
                         <text style="font-size: 25px" x={{290+e["proj"][0]*250/scale}} y={{310+e["proj"][1]*250/scale}} onclick="showDetails('v','{{ loop.index }}'); showSlides(1,'{{loop.index}}');">🌋</text>
                     </g>
                     {% endfor %}
                     
+                    <!-- SVG part for the timeline -->
                     <line x1="0" y1="575" x2="600" y2="575" stroke="#000" stroke-width="4"/>
-
-                    <defs>
+                      
+                      <!-- principal line with arrow -->
+                      <defs>
                         <marker id="arrowhead" markerWidth="5" markerHeight="4" refX="0" refY="2" orient="auto">
                           <polygon points="0 0, 5 2, 0 4" />
                         </marker>
                       </defs>
                       <line x1="0" y1="650" x2="570" y2="650" stroke="#000" stroke-width="5" marker-end="url(#arrowhead)" />
-
+                      
+                      <!-- Marks for centuries -->
                       <line x1="10" y1="660" x2="10" y2="640" stroke="#000" stroke-width="2"/>
                       <text style="font-size: 12px" x=0 y=672>1800</text>
                       <line x1="260" y1="660" x2="260" y2="640" stroke="#000" stroke-width="2"/>
@@ -153,6 +166,7 @@
                       <line x1="510" y1="660" x2="510" y2="640" stroke="#000" stroke-width="2"/>
                       <text style="font-size: 12px" x=500 y=672>2000</text>
 
+                       <!-- Marks for each 10 years -->
                       {% for i in [1,2,3,4,5,7,6,8,9] %}
                         <line x1="{{10+i*25}}" y1="655" x2="{{10+i*25}}" y2="645" stroke="#000" stroke-width="1"/>
                         <line x1="{{260+i*25}}" y1="655" x2="{{260+i*25}}" y2="645" stroke="#000" stroke-width="1"/>
@@ -160,9 +174,12 @@
                       <line x1="535" y1="655" x2="535" y2="645" stroke="#000" stroke-width="1"/>
                       <line x1="560" y1="655" x2="560" y2="645" stroke="#000" stroke-width="1"/>       
                       
+                       <!-- For each year with at least 1 event -->
                       {% for year,list in timeline.items() %}
                         {% if year >= 1800 %}
+                            <!-- Show a mark at the correct place on the timeline (distance between 2 years are 2.5 and timeline starting at 1800) -->
                             <line x1="{{(year-1800)*2.5+10}}" y1="660" x2="{{(year-1800)*2.5+10}}" y2="640" stroke="#555" stroke-width="3"/>
+                            <!-- Show each type of event for this year -->
                             {% for elem in list %}     
                                 {% if elem[0] == "e" %}
                             <image href="/static/img/icon_earthquake.png" x={{(year-1800)*2.5}} y=615 height="20" width="20" id=tm{{elem[0]}}{{elem[1]}}></image>
@@ -179,6 +196,7 @@
                  </svg>
             </div>
 
+             <!-- Buttons to choose the radius -->
             <div class="radius">
                 <a>Radius:</a>
                 <a href = "/location/10/?lat={{coord[0]}}&long={{coord[1]}}"> 10km </a>
@@ -192,6 +210,9 @@
         <div class="details">
             <div id="details">
 
+                <!-- The details of each event are created but by default not dispayed
+                     If statements are added in the case the feature was not available in the dataset 
+                     When the user click on 1 event, it will show the correspondant details -->
                 {% for e in events["earthquakes"] %}
                 <div class="details_table" id="e{{loop.index}}" style="display:none">
                     <h1 style="text-align:center">Details of the earthquake</h1>
@@ -397,8 +418,13 @@
                             </tr>
                         {% endif %}
                     </table>
+
                     {% with eid=loop.index %}  
                     <h3 style="text-align:center">Erruptions ({{e["erruptions"]|length}})</h3>
+
+                    <!-- For each erruption of a volcano, a class mySlides+[id of the current volcano] is created
+                         Then with css and js coming from w3school, the erruptions are showed like slide
+                         The last erruption is showed with arrows and the user can naviguate between all the erruptions -->
                     <div class="slideshow-container">
                     {% for event in e["erruptions"] %}
                     <div class="mySlides{{eid}}">
