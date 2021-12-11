@@ -12,6 +12,8 @@ function showDetails(type, index) {
     document.getElementById(eventID).style.display = "contents";
 }
 
+
+// Slides code for showing erruptions of a volcano(from w3school)
 slideIndex = 1
 
 function plusSlides(n,j) {
