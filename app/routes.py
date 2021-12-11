@@ -2,7 +2,7 @@ from app import app
 from flask import render_template, redirect
 from flask import url_for, request
 
-from app.datasets.datasets_methods import get_events_in_radius, get_timeline_events, get_amount_erruptions
+from app.datasets.datasets_methods import get_events_in_radius, get_timeline_events, get_amount_erruptions, get_address
 
 ##########
 # ROUTES #
@@ -22,6 +22,7 @@ def location(scale):
     # Get the coordinates indicated by the user
     if request.args.get("lat", None) and request.args.get("long", None):
         coord = (request.args["lat"],request.args["long"])
+        address = get_address(coord[0],coord[1])
 
         # Get all the events in the radius of a location 
         events = get_events_in_radius(coord,scale)
@@ -46,7 +47,7 @@ def location(scale):
         # Get the infos for the timeline
         timeline = get_timeline_events(events)
 
-        return render_template("location.html", summary=[nb_volcanos, nb_earthquakes, nb_tsunamis, nb_erruptions], events=events, info=info, coord=coord, scale=scale, semi_scale=int(scale/2),timeline=timeline)
+        return render_template("location.html", summary=[nb_volcanos, nb_earthquakes, nb_tsunamis, nb_erruptions], events=events, info=info, coord=coord, adress=address, scale=scale, semi_scale=int(scale/2),timeline=timeline)
 
     return redirect(url_for("index"))
 
@@ -57,6 +58,7 @@ def comparaison(scale):
      # Get the coordinates indicated by the user
     if request.args.get("lat", None) and request.args.get("long", None):
         coord = (request.args["lat"],request.args["long"])
+        adress = get_address(coord[0],coord[1])
 
         # Get all the events in the radius of the 1st location
         events = get_events_in_radius(coord,scale)
@@ -70,6 +72,8 @@ def comparaison(scale):
 
         if request.args.get("lat2", None) and request.args.get("long2", None):
             coord2 = (request.args["lat2"],request.args["long2"])
+            adress2 = get_address(coord2[0],coord2[1])
+
             # Get all the events in the radius of the 2nd location
             events2 = get_events_in_radius(coord2,scale)
             nb_earthquakes2 = len(events2["earthquakes"])
@@ -81,10 +85,10 @@ def comparaison(scale):
             tl2 = get_timeline_events(events2)
 
             # Page called with 2 coordinate
-            return render_template("comparaison.html",nb_places=2,summary=[nb_volcanos,nb_earthquakes,nb_tsunamis,nb_erruptions,nb_volcanos2,nb_earthquakes2,nb_tsunamis2,nb_erruptions2],events = [events,events2], coord=[coord,coord2],scale=scale, semi_scale=int(scale/2),timeline=[tl,tl2])
+            return render_template("comparaison.html",nb_places=2,summary=[nb_volcanos,nb_earthquakes,nb_tsunamis,nb_erruptions,nb_volcanos2,nb_earthquakes2,nb_tsunamis2,nb_erruptions2],events = [events,events2], coord=[coord,coord2], adress=[adress,adress2], scale=scale, semi_scale=int(scale/2),timeline=[tl,tl2])
         
         # Page called with 1 coordinate
-        return render_template("comparaison.html",nb_places=1,summary=[nb_volcanos,nb_earthquakes,nb_tsunamis,nb_erruptions],events = [events], coord=[coord],scale=scale, semi_scale=int(scale/2),timeline=[tl])
+        return render_template("comparaison.html",nb_places=1,summary=[nb_volcanos,nb_earthquakes,nb_tsunamis,nb_erruptions],events = [events], coord=[coord], adress=[adress], scale=scale, semi_scale=int(scale/2),timeline=[tl])
 
     # Page called with 0 coordinate
     return render_template("comparaison.html",nb_places=0)

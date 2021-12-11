@@ -52,6 +52,7 @@
         <div class="place">
             {% if nb_places > 0 %}
             <h1>[ {{coord[0][0]}} ; {{coord[0][1]}} ]</h1>
+            <h3>{{adress[0]}}</h3>
             <div class="circles" style="text-align:center;">
                 <svg width = "600" height = "720" style="border:4px solid black; background-color:white">
                     <g>
@@ -217,6 +218,7 @@
         <div class="place">
             {% if nb_places > 1 %}
             <h1>[ {{coord[1][0]}} ; {{coord[1][1]}} ]</h1>
+            <h3>{{adress[1]}}</h3>
             <div class="circles" style="text-align:center;">
                 <svg width = "600" height = "720" style="border:4px solid black; background-color:white">
                     <g>

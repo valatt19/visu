@@ -1,13 +1,38 @@
 import geopy.distance as dist
-import json 
-import copy
-
+from geopy.geocoders import Nominatim
 from geographiclib.geodesic import Geodesic
 
+import json
+import ssl
+
+# Compute projections points in a plan with 
 from math import sin, cos, radians, pi
 def point_pos(x0, y0, d, theta):
     theta_rad = 3*pi/2 + radians(theta)
     return x0 + d*cos(theta_rad), y0 + d*sin(theta_rad)
+
+def get_address(coord1, coord2):
+    """ Gets the textual adress of coordinates
+
+    Parameters
+    ----------
+    - coord1 (list) : [latitude, longitude] of the first place
+    - coord2 (list) : [latitude, longitude] of the second place
+
+    Returns
+    -------
+    - adress (string) : adress of the coordinates OR no adress
+    """
+    # Fix problem of certificate when using Nominating
+    ssl._create_default_https_context = ssl._create_unverified_context
+
+    geolocator = Nominatim(user_agent="visu_project")
+    coords = str(coord1) + ", " + str(coord2)
+    location = geolocator.reverse(coords)
+    # Avoid NoneType error if no adress (in a ocean by example)
+    if location is None:
+        return "No adress"
+    return location.address
 
 
 def compute_distance(coord1, coord2):
@@ -22,7 +47,7 @@ def compute_distance(coord1, coord2):
     -------
     - distance (float) : distance in KM between the two coordinates
     """
-    return round(dist.distance(coord1, coord2).km,4)
+    return round(dist.distance(coord1, coord2).km,4) # Round to 4 decimals (precision = meter)
 
 def compute_bearing(coord1, coord2):
     """ Computes a bearing between two coordinates
@@ -83,7 +108,8 @@ def get_events_in_radius(coord,radius):
 
                 if "intensity" in earthquake :
                     eq_event["intensity"] = hd["earthquakes"]["intensity"][earthquake["intensity"]-1]
-
+                
+                # If not precise amount given, take the minimum value of Amount Order (for deaths, damages, ...)
                 if (not ("deaths" in earthquake)) and "deathsAmountOrder" in earthquake :
                      deaths_mins = [0,1,51,101,1001]
                      # deaths_maxs = [0,50,100,1000,1001]
@@ -126,6 +152,7 @@ def get_events_in_radius(coord,radius):
                         if str(tsunami["causeCode"]) == c["id"]:
                             ts_event["cause"] = c["description"]
 
+                # If not precise amount given, take the minimum value of Amount Order (for deaths, damages, ...)
                 if (not ("deaths" in tsunami)) and "deathsAmountOrder" in tsunami :
                      deaths_mins = [0,1,51,101,1001]
                      # deaths_maxs = [0,50,100,1000,1001]
@@ -163,7 +190,9 @@ def get_events_in_radius(coord,radius):
                 vlocation["distance"] = vl_distance
                 vlocation["bearing"] = compute_bearing(coord,vl_coord)
                 vlocation["proj"] = point_pos(0,0,vl_distance,vlocation["bearing"])
-                vlocation["errupt"] = []
+                vlocation["errupt"] = [] # This list will be filled when browsing the volcanos events
+                
+                # Theses values will contain the sum computed for all erruptions of this volcano
                 vlocation["deaths"] = 0
                 vlocation["damages"] = 0
                 vlocation["injuries"] = 0
@@ -177,6 +206,7 @@ def get_events_in_radius(coord,radius):
             if str(erruption["volcanoLocationId"]) == str(volcanos_id[i]) :
                 vevent = erruption
 
+                # If not precise amount given, take the minimum value of Amount Order (for deaths, damages, ...)
                 if (not ("deaths" in erruption)) and "deathsAmountOrder" in erruption :
                         deaths_mins = [0,1,51,101,1001]
                         # deaths_maxs = [0,50,100,1000,1001]
@@ -206,11 +236,10 @@ def get_events_in_radius(coord,radius):
                     if key in vevent:
                         events["volcanos"][i][key] += vevent[key]
     
-    # Sorts the erruptions of a volcano
+    # Sorts the erruptions of a volcano with first erruption = most recent
     for vol in events["volcanos"]:
         sorted_erruptions = sorted(vol["errupt"], key=lambda d: d["year"],reverse=True)
         vol["erruptions"] = sorted_erruptions
-
 
     # Finally, returns all the events            
     return events

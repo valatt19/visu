@@ -95,6 +95,7 @@
 
         <div class="visu" style="text-align:center">
             <h1>Location: [ {{coord[0]}} ; {{coord[1]}} ]</h1>
+            <h3>{{adress}}</h3>
             <div class="circles" style="text-align:center;">
                 <svg width = "600" height = "720" style="border:4px solid black; background-color:white">
                     <g>
@@ -398,7 +399,7 @@
                         {% endif %}
                     </table>
                     {% with eid=loop.index %}  
-                    <h3 style="text-align:center">Erruptions ({{e["erruptions"]|length}})</h3>
+                    <h3 style="text-align:center; padding: top 5px;">Erruptions ({{e["erruptions"]|length}})</h3>
                     <div class="slideshow-container">
                     {% for event in e["erruptions"] %}
                     <div class="mySlides{{eid}}">
