@@ -14,7 +14,7 @@
         <title>Disasters comparaison</title>
     </head>
     <body>
-       
+       <!-- NAVBAR code--> 
         <nav  class="navbar navbar-expand-sm bg-dark navbar-dark col">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">Event</a>
@@ -27,6 +27,12 @@
                     </ul>
 
                     <form {% block action %} class="d-flex" action="/comparaison/" method="GET" {% endblock %}>
+                    <!-- This page can contain :
+                        - 0 coordinate (if compare button clicked on homepage)
+                        - 1 coordinate (if compare button clicked on location page)
+                        - 2 coordinates (if the users indicates 2 coordinates on this page)
+                        => the variable nb_places contains this value and is used to display the correct amount of information on the page
+                    -->
                     {% if nb_places > 0 %}
                         <input class="form-control me-2" type="number" id="lat" step="0.0001" name="lat" value={{coord[0][0]}}>
                         <input class="form-control me-2" type="number" id="long" step="0.0001" name="long" value={{coord[0][1]}}>
@@ -42,13 +48,12 @@
                         <input class="form-control me-2" type="number" id="lat2" step="0.0001" name="lat2" placeholder="2nd Latitude">
                         <input class="form-control me-2" type="number" id="long2" step="0.0001" name="long2" placeholder="2nd Longitude">
                     {% endif %}
-
                     </form>
-
                 </div>
             </div>
         </nav>
 
+        <!-- mini-map and timeline of the first location (if at least 1 coordinates provided)-->
         <div class="place">
             {% if nb_places > 0 %}
             <h1>[ {{coord[0][0]}} ; {{coord[0][1]}} ]</h1>
@@ -139,6 +144,10 @@
             {% endif %}
         </div>
 
+        <!-- Summary of the amounts of all disasters for the 2 locations
+             - left values are displayed if at least 1 location given
+             - right values are displayed if at least 2 locations given 
+        -->
         <div class="summary">
             <h1>Comparaison</h1>
             <h3>Volcanos</h3>
@@ -202,6 +211,7 @@
                 </tr>
             </table>
 
+            <!-- The user will have the possibility to change the scale if 2 locations are given-->
             {% if nb_places > 1 %}
             <h1>Radius</h1>
             <div class="radius">
@@ -215,6 +225,7 @@
             
         </div>
 
+        <!-- mini-map and timeline of the 2nd location (if at least 2 coordinates provided)-->
         <div class="place">
             {% if nb_places > 1 %}
             <h1>[ {{coord[1][0]}} ; {{coord[1][1]}} ]</h1>

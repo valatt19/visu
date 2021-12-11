@@ -11,8 +11,6 @@ from app.datasets.datasets_methods import get_events_in_radius, get_timeline_eve
 # Homepage (for searching a location) ######################
 @app.route("/", methods=["GET","POST"])
 def index():
-
-
     return render_template("homepage.html")
 
 # Visualisation (for  a location) ##########################
@@ -24,15 +22,14 @@ def location(scale):
         coord = (request.args["lat"],request.args["long"])
         address = get_address(coord[0],coord[1])
 
-        # Get all the events in the radius of a location 
+        # Get all the events and their amounts in the radius of a location 
         events = get_events_in_radius(coord,scale)
         nb_earthquakes = len(events["earthquakes"])
         nb_volcanos = len(events["volcanos"])
         nb_tsunamis = len(events["tsunamis"])
         nb_erruptions = get_amount_erruptions(events)
 
-        #info contains the sum of the damage("damageMillionsDollars", "deaths", "damageAmountOrder",
-        # "deathsAmountOrder", "deathsAmountOrder", "housesDestroyedAmountOrder")
+        # Info contains the sum of the damage("deaths", "damages", "injuries", "housesDamaged")
         info = dict()
 
         for event_type, event in events.items():

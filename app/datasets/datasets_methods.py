@@ -104,7 +104,7 @@ def get_events_in_radius(coord,radius):
                 eq_event = earthquake
                 eq_event["distance"] = eq_distance
                 eq_event["bearing"] = compute_bearing(coord,eq_coord)
-                eq_event["proj"] = point_pos(0,0,eq_distance,eq_event["bearing"])
+                eq_event["proj"] = point_pos(0,0,eq_distance,eq_event["bearing"]) #Point (0,0) is the center of the cercle, representing the location coordinates
 
                 if "intensity" in earthquake :
                     eq_event["intensity"] = hd["earthquakes"]["intensity"][earthquake["intensity"]-1]
